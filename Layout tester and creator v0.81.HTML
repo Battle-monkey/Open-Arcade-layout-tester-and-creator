@@ -60,44 +60,14 @@
 
 
         .layout-area {
-
-
-
             border: 2px solid #4A5568;
-
-
-
             position: relative;
-
-
-
             overflow: hidden; 
-
-
-
             background-color: #F7FAFC;
-
-
-
             margin: 0 auto; 
-
-
-
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-
-
             border-radius: 0.5rem; 
-
-
-
-            transition: width 0.3s, height 0.3s; 
-
-
-
-
-
-
+            transition: width 0.3s, height 0.3s;  
 
         }
 
@@ -935,7 +905,7 @@
 
             @page {
 
-
+                size: auto;           
 
                 margin: 0; 
 
@@ -947,10 +917,8 @@
             body {
 
 
-
                 font-family: sans-serif; 
-
-
+                visibility: hidden;
 
                 margin: 0 !important; 
 
@@ -965,7 +933,17 @@
 
 
                 color-adjust: exact !important; 
-
+              }
+#layout-area {
+      transform: scale(2); 
+    transform-origin: top left;
+    visibility: visible;
+    position: relative !important;
+    left: 0;
+    top: 0;
+    transform: none !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
 
 
             }
@@ -995,46 +973,14 @@
 
 
             .layout-area {
-
-
-
+                box-shadow: scale(2)!important;
                 border: none !important;
+                 background: white !important;
 
-
-
-                box-shadow: none !important;
-
-
-
-                margin: 0 !important; 
-
-
-
-                padding: 0 !important;
-
-
-
-                overflow: visible !important; 
-
-
-
-                position: absolute !important; 
-
-
-
-                top: 0;
-
-
-
-                left: 0;
-
-
-
-                transform: scale(1) !important; 
-
-
-
-                page-break-inside: avoid;
+              position: static !important; /* en lugar de absolute */
+              transform:  !important;
+              page-break-inside: avoid;
+              break-inside: avoid;
   }
 .layout-area.print-outlines .draggable,
   .layout-area.print-outlines .button-24mm,
@@ -1473,7 +1419,15 @@
                         <button id="add-30mm" class="control-button w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="add30mm">Añadir Botón 30mm</button>
 
 
+                      <hr class="my-3">
 
+
+
+                        <button id="add-jlf" class="control-button-purple w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="addJlf">Añadir Sanwa JLF</button>
+
+
+
+                        <button id="add-crown309" class="control-button-purple w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="addCrown">Añadir Crown 309</button>
                         
 
 
@@ -1548,25 +1502,6 @@
 
                         <button id="load-preset" class="control-button w-full bg-red-500 hover:bg-red-700 rounded px-2 py-1" data-translate-key="loadPreset">Cargar Layout</button>
 
-
-
-                        
-
-
-
-                        <hr class="my-3">
-
-
-
-
-
-
-
-                        <button id="add-jlf" class="control-button-purple w-full bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="addJlf">Añadir Sanwa JLF</button>
-
-
-
-                        <button id="add-crown309" class="control-button-purple w-full bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="addCrown">Añadir Crown 309</button>
 
 
 
@@ -1645,7 +1580,14 @@
 
                             <input type="color" id="button-color-input-editor" class="w-full h-10 mt-1">
 
-
+<div class="mt-2">
+  <label for="button-pos-x">Posición X (mm):</label>
+  <input type="number" id="button-pos-x" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
+</div>
+<div class="mt-2">
+  <label for="button-pos-y">Posición Y (mm):</label>
+  <input type="number" id="button-pos-y" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
+</div>
 
                         </div>
 
@@ -4692,7 +4634,30 @@
                 selectedButtonForEditor = e.target;
 
 
+const inputPosX = document.getElementById('button-pos-x');
+const inputPosY = document.getElementById('button-pos-y');
 
+function updateButtonPositionFromInputs() {
+  if (!selectedButtonForEditor) return;
+
+  const x = parseFloat(inputPosX.value);
+  const y = parseFloat(inputPosY.value);
+  const diameter = parseFloat(selectedButtonForEditor.dataset.physicalDiameterMm || 30);
+
+  if (!isNaN(x) && !isNaN(y)) {
+    selectedButtonForEditor.dataset.physicalXMm = x;
+    selectedButtonForEditor.dataset.physicalYMm = y;
+
+    const px = x * current_PX_PER_MM;
+    const py = y * current_PX_PER_MM;
+
+    selectedButtonForEditor.style.left = `${px - (diameter * current_PX_PER_MM) / 2}px`;
+    selectedButtonForEditor.style.top = `${py - (diameter * current_PX_PER_MM) / 2}px`;
+  }
+}
+
+inputPosX.addEventListener('change', updateButtonPositionFromInputs);
+inputPosY.addEventListener('change', updateButtonPositionFromInputs);
                 
 
 
