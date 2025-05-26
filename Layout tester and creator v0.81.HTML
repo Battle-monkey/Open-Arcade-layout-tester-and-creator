@@ -418,6 +418,23 @@
             background-color: #ED8936; 
             z-index: 10; 
 
+            /* Estilos para el anillo exterior de los botones */
+    .draggable.button-24mm::before,
+    .draggable.button-30mm::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background-color: inherit; /* Hereda el color de fondo del botón */
+        border: 2px solid rgba(0,0,0,0.3); /* Mismo estilo de borde que el botón principal */
+        box-sizing: border-box; /* Asegura que el borde esté incluido en el tamaño */
+        z-index: -1; /* Coloca el anillo exterior detrás del contenido del botón principal */
+        /* El ancho y alto se establecerán mediante variables CSS desde JavaScript */
+        width: var(--outer-diameter-px);
+        height: var(--outer-diameter-px);
+    
 
         }
 
@@ -3262,7 +3279,17 @@
 
             button.textContent = label || `${diameterMM}`; 
 
-
+            let outerDiameterMm;
+        if (diameterMM === 24) {
+            outerDiameterMm = 27.5;
+        } else if (diameterMM === 30) {
+            outerDiameterMm = 34;
+        } else {
+            // Fallback si se crea un botón de otro tamaño, aunque no debería ocurrir con los botones actuales
+            outerDiameterMm = diameterMM * 1.15; // Un pequeño aumento como fallback
+        }
+        const outerDiameterPX = outerDiameterMm * current_PX_PER_MM;
+        button.style.setProperty('--outer-diameter-px', `${outerDiameterPX}px`);
 
             if (color) {
 
