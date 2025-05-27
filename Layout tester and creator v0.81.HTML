@@ -1581,11 +1581,11 @@
                             <input type="color" id="button-color-input-editor" class="w-full h-10 mt-1">
 
 <div class="mt-2">
-  <label for="button-pos-x">Posición X (mm):</label>
+  <label for="button-pos-x" data-translate-key="pos_x">Posición X (mm):</label>
   <input type="number" id="button-pos-x" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
 </div>
 <div class="mt-2">
-  <label for="button-pos-y">Posición Y (mm):</label>
+  <label for="button-pos-y" data-translate-key="pos_x">Posición Y (mm):</label>
   <input type="number" id="button-pos-y" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
 </div>
 
@@ -1595,7 +1595,20 @@
 
                     </div>
 
+<div id="joystick-editor-container" class="hidden mt-4 pt-4 border-t">
+  <h3 class="text-lg font-semibold mb-2" data-translate-key="joystick_properties">Propiedades de la Palanca </h3>
 
+
+  <div class="mb-2">
+    <label for="joystick-pos-x" data-translate-key="pos_x">Posición X (mm):</label>
+    <input type="number" id="joystick-pos-x" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
+  </div>
+
+  <div class="mb-2">
+    <label for="joystick-pos-y" data-translate-key="pos_x">Posición Y (mm):</label>
+    <input type="number" id="joystick-pos-y" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
+  </div>
+</div>
 
 
 
@@ -2106,7 +2119,10 @@
 
                 buttonColorLabel: "Color del Botón:", 
 
-
+               
+			   joystick_properties: "Propiedades de la Palanca",
+               pos_x: "Posición X (mm)",
+               pos_y: "Posición Y (mm)",
 
                 imagePropertiesTitle: "Propiedades de Imagen",
 
@@ -2270,7 +2286,9 @@
 
                 buttonColorLabel: "Button Color:",
 
-
+                joystick_properties: "Joystick Properties",
+                pos_x: "Position X (mm)",
+                pos_y: "Position Y (mm)",
 
                 imagePropertiesTitle: "Image Properties",
 
@@ -2434,7 +2452,9 @@
 
                 buttonColorLabel: "Colore Pulsante:",
 
-
+                joystick_properties: "Proprietà del joystick",
+                pos_x: "Posizione X (mm)",
+                pos_y: "Posizione Y (mm)",
 
                 imagePropertiesTitle: "Proprietà Immagine",
 
@@ -2598,7 +2618,9 @@
 
                 buttonColorLabel: "Couleur du Bouton:",
 
-
+                joystick_properties: "Propriétés du joystick",
+                pos_x: "Position X (mm)",
+                pos_y: "Position Y (mm)",
 
                 imagePropertiesTitle: "Propriétés de l'image",
 
@@ -2762,7 +2784,9 @@
 
                 buttonColorLabel: "Button-Farbe:",
 
-
+                joystick_properties: "Joystick-Eigenschaften",
+                pos_x: "Position X (mm)",
+                pos_y: "Position Y (mm)",
 
                 imagePropertiesTitle: "Bildeigenschaften",
 
@@ -3283,203 +3307,89 @@
 
 
 
-        function createJoystickPlate(name, pWidthMM, pHeightMM, physicalXMm, physicalYMm, mountingHolesData, isRotated = false) {
+       function createJoystickPlate(name, pWidthMM, pHeightMM, physicalXMm, physicalYMm, mountingHolesData, isRotated = false) {
+
+    const displayWidthMM = isRotated ? pHeightMM : pWidthMM;
+    const displayHeightMM = isRotated ? pWidthMM : pHeightMM;
+
+    const plate = baseCreateElement({ physicalXMm, physicalYMm });
+
+    plate.classList.add('joystick-plate', 'draggable'); // ✅ Añade clase draggable
+    plate.style.position = 'absolute'; // ✅ Necesario para posicionar en layout-area
+
+    // ✅ Posicionamiento inicial
+    const px = physicalXMm * current_PX_PER_MM;
+    const py = physicalYMm * current_PX_PER_MM;
+    plate.style.left = `${px}px`;
+    plate.style.top = `${py}px`;
+
+    plate.addEventListener('click', handleJoystickClick); // ✅ Asocia el evento para mostrar el panel
+
+    plate.dataset.physicalWidthMm = displayWidthMM;
+    plate.dataset.physicalHeightMm = displayHeightMM;
+    plate.dataset.originalWidthMm = pWidthMM;
+    plate.dataset.originalHeightMm = pHeightMM;
+    plate.dataset.isRotated = isRotated;
+    plate.dataset.name = name;
+    plate.dataset.mountingHoles = JSON.stringify(mountingHolesData);
+
+    const plateWidthPX = displayWidthMM * current_PX_PER_MM;
+    const plateHeightPX = displayHeightMM * current_PX_PER_MM;
+
+    plate.style.width = `${plateWidthPX}px`;
+    plate.style.height = `${plateHeightPX}px`;
+
+    addDeleteButtonToElement(plate, el => el.remove());
+
+    const nameSpan = document.createElement('span');
+    nameSpan.classList.add('plate-name');
+    nameSpan.textContent = name;
+    plate.appendChild(nameSpan);
+
+    const ballTop = document.createElement('div');
+    ballTop.classList.add('joystick-ball-top');
+    const ballDiameterPX = 35 * current_PX_PER_MM;
+    ballTop.style.width = `${ballDiameterPX}px`;
+    ballTop.style.height = `${ballDiameterPX}px`;
+    plate.appendChild(ballTop);
+
+    if (mountingHolesData) {
+        mountingHolesData.forEach(holeData => {
+            const hole = document.createElement('div');
+            hole.classList.add('mounting-hole');
+            const holeDiaPX = (holeData.diaMM || 4) * current_PX_PER_MM;
+            hole.style.width = `${holeDiaPX}px`;
+            hole.style.height = `${holeDiaPX}px`;
+
+            const holeCenterX_px = (plateWidthPX / 2) + (holeData.xMM * current_PX_PER_MM);
+            const holeCenterY_px = (plateHeightPX / 2) + (holeData.yMM * current_PX_PER_MM);
+            hole.style.left = `${holeCenterX_px - (holeDiaPX / 2)}px`;
+            hole.style.top = `${holeCenterY_px - (holeDiaPX / 2)}px`;
+            plate.appendChild(hole);
+        });
+    }
+
+    makeDraggable(plate); // ✅ Habilita movimiento
+function handleJoystickClick(e) {
+  const plate = e.currentTarget;
+
+  selectedJoystick = plate;
+  selectedButtonForEditor = null;
+
+  // Mostrar el panel de joystick, ocultar el de botones
+  document.getElementById('joystick-editor-container').classList.remove('hidden');
+  document.getElementById('button-editor-container').classList.add('hidden');
+
+  // Ocultar panel de imagen si está activo
+  deselectImage?.();
+
+  // Cargar valores actuales en el panel
+  document.getElementById('joystick-pos-x').value = parseFloat(plate.dataset.physicalXMm || 0).toFixed(1);
+  document.getElementById('joystick-pos-y').value = parseFloat(plate.dataset.physicalYMm || 0).toFixed(1);
+}
+    return plate;
 
 
-
-            const displayWidthMM = isRotated ? pHeightMM : pWidthMM;
-
-
-
-            const displayHeightMM = isRotated ? pWidthMM : pHeightMM;
-
-
-
-
-
-
-
-            const plate = baseCreateElement({ physicalXMm, physicalYMm }); 
-
-
-
-            plate.classList.add('joystick-plate'); 
-
-
-
-            
-
-
-
-            plate.dataset.physicalWidthMm = displayWidthMM;
-
-
-
-            plate.dataset.physicalHeightMm = displayHeightMM;
-
-
-
-            plate.dataset.originalWidthMm = pWidthMM; 
-
-
-
-            plate.dataset.originalHeightMm = pHeightMM;
-
-
-
-            plate.dataset.isRotated = isRotated;
-
-
-
-            plate.dataset.name = name; 
-
-
-
-            plate.dataset.mountingHoles = JSON.stringify(mountingHolesData);
-
-
-
-
-
-
-
-
-
-
-
-            const plateWidthPX = displayWidthMM * current_PX_PER_MM;
-
-
-
-            const plateHeightPX = displayHeightMM * current_PX_PER_MM;
-
-
-
-            plate.style.width = `${plateWidthPX}px`;
-
-
-
-            plate.style.height = `${plateHeightPX}px`;
-
-
-
-
-
-
-
-            addDeleteButtonToElement(plate, el => el.remove());
-
-
-
-
-
-
-
-            const nameSpan = document.createElement('span');
-
-
-
-            nameSpan.classList.add('plate-name');
-
-
-
-            nameSpan.textContent = name;
-
-
-
-            plate.appendChild(nameSpan);
-
-
-
-
-
-
-
-            const ballTop = document.createElement('div');
-
-
-
-            ballTop.classList.add('joystick-ball-top');
-
-
-
-            const ballDiameterPX = 35 * current_PX_PER_MM; 
-
-
-
-            ballTop.style.width = `${ballDiameterPX}px`;
-
-
-
-            ballTop.style.height = `${ballDiameterPX}px`;
-
-
-
-            plate.appendChild(ballTop);
-
-
-
-
-
-
-
-            if (mountingHolesData) {
-
-
-
-                mountingHolesData.forEach(holeData => {
-
-
-
-                    const hole = document.createElement('div');
-
-
-
-                    hole.classList.add('mounting-hole');
-
-
-
-                    const holeDiaPX = (holeData.diaMM || 4) * current_PX_PER_MM;
-
-
-
-                    hole.style.width = `${holeDiaPX}px`;
-
-
-
-                    hole.style.height = `${holeDiaPX}px`;
-
-
-
-                    const holeCenterX_px = (plateWidthPX / 2) + (holeData.xMM * current_PX_PER_MM);
-
-
-
-                    const holeCenterY_px = (plateHeightPX / 2) + (holeData.yMM * current_PX_PER_MM);
-
-
-
-                    hole.style.left = `${holeCenterX_px - (holeDiaPX / 2)}px`;
-
-
-
-                    hole.style.top = `${holeCenterY_px - (holeDiaPX / 2)}px`;
-
-
-
-                    plate.appendChild(hole);
-
-
-
-                });
-
-
-
-            }
-
-
-
-            return plate;
 
 
 
@@ -4632,7 +4542,9 @@
 
 
                 selectedButtonForEditor = e.target;
-
+				
+document.getElementById('button-editor-container').classList.remove('hidden');
+document.getElementById('joystick-editor-container').classList.add('hidden'); // ✅ OCULTAR el panel de joystick
 
 const inputPosX = document.getElementById('button-pos-x');
 const inputPosY = document.getElementById('button-pos-y');
@@ -4642,6 +4554,7 @@ function updateButtonPositionFromInputs() {
 
   const x = parseFloat(inputPosX.value);
   const y = parseFloat(inputPosY.value);
+  const isJoystick = selectedButtonForEditor.classList.contains('joystick-plate');
   const diameter = parseFloat(selectedButtonForEditor.dataset.physicalDiameterMm || 30);
 
   if (!isNaN(x) && !isNaN(y)) {
@@ -4659,7 +4572,8 @@ function updateButtonPositionFromInputs() {
 inputPosX.addEventListener('change', updateButtonPositionFromInputs);
 inputPosY.addEventListener('change', updateButtonPositionFromInputs);
                 
-
+inputPosX.value = parseFloat(selectedButtonForEditor.dataset.physicalXMm || 0).toFixed(1);
+inputPosY.value = parseFloat(selectedButtonForEditor.dataset.physicalYMm || 0).toFixed(1);
 
 
                 buttonLabelInput.value = selectedButtonForEditor.dataset.label || "";
@@ -4767,11 +4681,11 @@ inputPosY.addEventListener('change', updateButtonPositionFromInputs);
 
 
 
+function handleJoystickClick(e) {
+  const plate = e.currentTarget;
+  selectedButtonForEditor = plate;
 
-
-
-
-
+}
 
 
         function hideButtonEditor() {
