@@ -5,6 +5,10 @@ The final idea for this project is to create a versatile arcade layout tester an
 WORKFLOW
 
 -Create a double diameter for the buttons, inner diameter fot the hole and outer diameter for the real button diameter.
+
 -Modify the anti collision sistem to put a 3mm gap between the real diameter of the buttons 
+
 -Modify the anti collision sistem to work right with the lever plates
+
 -Create a drag selection tool, capable to select variuos items at the same time and move or center on the canvas
+
