@@ -13,7 +13,7 @@ WORKFLOW
 -Create a drag selection tool, capable to select variuos items at the same time and move or center on the canvas
 
 
-Copyright © 2025 [BattleMonkey]((https://x.com/XBattleMonkeyX))<br/> and  [Scorpion-MsX](@ScorpioNMsX)<br/>
+Copyright © 2025 [BattleMonkey]((https://x.com/XBattleMonkeyX)<br/> and  [Scorpion-MsX](@ScorpioNMsX)<br/>
 
 
  
