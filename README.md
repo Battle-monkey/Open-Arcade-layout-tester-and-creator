@@ -12,6 +12,15 @@ WORKFLOW
 
 -Create a drag selection tool, capable to select variuos items at the same time and move or center on the canvas
 
+-Layouts to come
+
+  -Noir----------------done
+  -Enth---8+2
+  -Enth---Shmups
+  -Enth---6+2
+  -Enth---4+2+2
+  
+
 
 Copyright © 2025 [BattleMonkey](@XBattleMonkeyX)<br/> and  [Scorpion-MsX](@ScorpioNMsX)<br/>
 
