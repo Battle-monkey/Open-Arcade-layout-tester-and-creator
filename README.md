@@ -26,7 +26,7 @@ WORKFLOW
   
 
 
-Copyright © 2025 [BattleMonkey](@XBattleMonkeyX)<br/> and  [Scorpion-MsX](@ScorpioNMsX)<br/>
+Copyright © 2025 [BattleMonkey](@XBattleMonkeyX)<br/> and [Scorpion-MsX](@ScorpioNMsX)<br/>
 
 
  
