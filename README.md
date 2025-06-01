@@ -15,9 +15,13 @@ WORKFLOW
 -Layouts to come
 
   -Noir----------------done
+  
   -Enth---8+2
+  
   -Enth---Shmups
+  
   -Enth---6+2
+  
   -Enth---4+2+2
   
 
