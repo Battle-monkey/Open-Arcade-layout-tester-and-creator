@@ -1542,8 +1542,8 @@
 
 
 
-                    <!-- 🧭 Panel flotante lateral derecho -->
-<div id="floating-editor-panel" class="hidden fixed top-4 right-4 w-80 max-h-[90vh] overflow-y-auto bg-gray-900 text-white p-4 rounded-lg shadow-2xl z-50">
+                    <!--  Panel flotante lateral derecho -->
+<div id="floating-editor-panel" class="hidden fixed top-4 right-4 w-64 max-h-[90vh] overflow-y-auto bg-gray-900 text-white p-3 rounded-lg shadow-2xl z-50">
 
   <!-- 🎛 Propiedades del Botón -->
   <div id="button-editor-container" class="hidden">
@@ -1551,7 +1551,7 @@
 
     <div>
       <label for="button-label-input" data-translate-key="buttonLabelLabel">Etiqueta del Botón:</label>
-      <input type="text" id="button-label-input" class="control-input">
+      <input type="text" id="button-label-input" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1">
     </div>
 
     <div class="mt-2">
@@ -1625,111 +1625,6 @@
   </div>
 
 </div>
-
-
-
-
-                    <div id="image-controls-container" class="hidden mt-4 pt-4 border-t">
-
-
-
-                        <h3 class="text-lg font-semibold mb-2" data-translate-key="imagePropertiesTitle">Propiedades de Imagen</h3>
-
-
-
-                        <div>
-
-
-
-                            <label for="image-scale" data-translate-key="imageScaleLabel">Escala (%):</label>
-
-
-
-                            <input type="number" id="image-scale" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" value="100" min="10">
-
-
-
-                        </div>
-
-
-
-                        <div class="mt-2">
-
-
-
-                            <label for="image-rotate" data-translate-key="imageRotateLabel">Rotación (°):</label>
-
-
-
-                            <input type="number" id="image-rotate" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" value="0">
-
-
-
-                        </div>
-
-
-
-                        <div class="mt-2">
-
-
-
-                            <label for="image-opacity" data-translate-key="imageOpacityLabel">Opacidad (%):</label>
-
-
-
-                            <input type="range" id="image-opacity" class="w-full" value="100" min="0" max="100">
-
-
-
-                        </div>
-
-
-
-                         <div class="mt-3 flex items-center">
-
-
-
-                            <input type="checkbox" id="image-lock">
-
-
-
-                            <label for="image-lock" class="ml-2" data-translate-key="imageLockLabel">Bloquear Imagen</label>
-
-
-
-                        </div>
-
-
-
-                        <div class="mt-3 flex items-center">
-
-
-
-                            <input type="checkbox" id="image-visible">
-
-
-
-                            <label for="image-visible" class="ml-2" data-translate-key="imageVisibleLabel">Visible</label>
-
-
-
-                        </div>
-
-
-
-                         <button id="center-image" class="control-button w-full mt-3 bg-red-500 hover:bg-red-700" data-translate-key="centerImageBtn">Centrar Imagen</button>
-
-
-
-                        <button id="delete-image" class="control-button-red w-full mt-3" data-translate-key="deleteImageBtn">Eliminar Imagen</button>
-
-
-
-                    </div>
-
-
-
-
 
 
 
@@ -3316,7 +3211,23 @@
 
         ];
 
+function updateJoystickPositionFromInputs() {
+  if (!selectedJoystick) return;
 
+  const x = parseFloat(document.getElementById('joystick-pos-x').value);
+  const y = parseFloat(document.getElementById('joystick-pos-y').value);
+
+  if (!isNaN(x) && !isNaN(y)) {
+    selectedJoystick.dataset.physicalXMm = x;
+    selectedJoystick.dataset.physicalYMm = y;
+
+    const px = x * current_PX_PER_MM;
+    const py = y * current_PX_PER_MM;
+
+    selectedJoystick.style.left = `${px - selectedJoystick.offsetWidth / 2}px`;
+    selectedJoystick.style.top = `${py - selectedJoystick.offsetHeight / 2}px`;
+  }
+}
 
 
 
@@ -3384,12 +3295,12 @@
         });
     }
 
-    makeDraggable(plate); // ✅ Habilita movimiento
+    makeDraggable(plate); //  Habilita movimiento
 function handleJoystickClick(e) {
   const plate = e.currentTarget;
 
   selectedJoystick = plate;
-  selectedButtonForEditor = null;
+  selectedButtonForEditor =  null;
 
   // Mostrar el panel de joystick, ocultar el de botones
 document.getElementById('floating-editor-panel').classList.remove('hidden');
@@ -3402,7 +3313,10 @@ document.getElementById('image-controls-container').classList.add('hidden');
   // Cargar valores actuales en el panel
   document.getElementById('joystick-pos-x').value = parseFloat(plate.dataset.physicalXMm || 0).toFixed(1);
   document.getElementById('joystick-pos-y').value = parseFloat(plate.dataset.physicalYMm || 0).toFixed(1);
+  document.getElementById('joystick-pos-x').addEventListener('change', updateJoystickPositionFromInputs);
+document.getElementById('joystick-pos-y').addEventListener('change', updateJoystickPositionFromInputs);
 }
+
     return plate;
 
 
@@ -3755,7 +3669,10 @@ document.getElementById('image-controls-container').classList.add('hidden');
 
             }
 
-
+             document.getElementById('floating-editor-panel').classList.remove('hidden');
+             document.getElementById('image-controls-container').classList.remove('hidden');
+             document.getElementById('button-editor-container').classList.add('hidden');
+             document.getElementById('joystick-editor-container').classList.add('hidden');
 
             selectedImageElement = imageWrapper;
 
@@ -4701,7 +4618,7 @@ inputPosY.value = parseFloat(selectedButtonForEditor.dataset.physicalYMm || 0).t
 
 function handleJoystickClick(e) {
   const plate = e.currentTarget;
-  selectedButtonForEditor = plate;
+  selectedButtonForEditor = null;
 
 }
 
@@ -4719,9 +4636,6 @@ function handleJoystickClick(e) {
 
 
         }
-
-
-
         // --- End Button Editor Logic ---
 
 
@@ -4747,11 +4661,6 @@ function handleJoystickClick(e) {
 
 
             const isResizeHandleClick = event.target.classList.contains('resize-handle');
-
-
-
-
-
 
 
             if (selectedButtonForEditor && !buttonEditorContainer.contains(event.target) && event.target !== selectedButtonForEditor && !selectedButtonForEditor.contains(event.target)) {
@@ -4788,7 +4697,10 @@ function handleJoystickClick(e) {
 
             if (event.target === layoutArea) {
 
-
+document.getElementById('floating-editor-panel').classList.remove('hidden');
+document.getElementById('image-controls-container').classList.remove('hidden');
+document.getElementById('button-editor-container').classList.add('hidden');
+document.getElementById('joystick-editor-container').classList.add('hidden');
 
                 hideButtonEditor();
 
@@ -4825,9 +4737,13 @@ function elementsCollide(el1, el2) {
 }
 
 function isOverlappingAny(element) {
-    const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => el !== element);
-    return others.some(el => elementsCollide(element, el));
+  const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
+    return el !== element && !el.classList.contains('draggable-image-wrapper');
+  });
+  return others.some(el => elementsCollide(element, el));
 }
+
+
 function getCenter(el) {
     const rect = el.getBoundingClientRect();
     return {
@@ -4871,15 +4787,17 @@ function pushAwayFrom(el1, el2) {
 }
 
 function resolveCollisions(element) {
-    const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => el !== element);
-    others.forEach(other => {
-        let attempts = 0;
-        while (isCircleOverlap(element, other) && attempts < 1) {  // Máximo 1 empujes
-            pushAwayFrom(element, other);
-            attempts++;
-        }
-    });
+  const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
+    return el !== element && !el.classList.contains('draggable-image-wrapper');
+  });
+
+  others.forEach(other => {
+    if (isCircleOverlap(element, other)) {
+      pushAwayFrom(element, other);
+    }
+  });
 }
+
 
 
 function makeDraggable(element) {
@@ -4888,6 +4806,17 @@ function makeDraggable(element) {
 
             element.addEventListener('mousedown', (e) => {
 
+document.addEventListener('mouseup', (e) => {
+  if (draggedItem) {
+    draggedItem.classList.remove('dragging');
+
+    if (!draggedItem.classList.contains('draggable-image-wrapper')) {
+      resolveCollisions(draggedItem);
+    }
+
+    draggedItem = null;
+  }
+});
 
 
                 if (element.classList.contains('draggable-image-wrapper') && element.dataset.locked === "true") {
