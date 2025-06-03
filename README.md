@@ -28,7 +28,7 @@ The final idea for this project is to create a versatile arcade layout tester an
   
 
 
-### Copyright © 2025 [BattleMonkey](@XBattleMonkeyX)<br/> and [Scorpion-MsX](@ScorpioNMsX)<br/>
+### Copyright © 2025 [BattleMonkey].(https://github.com/Battle-monkey)<br/> and [Scorpion-MsX](https://github.com/ScorpioNMsX)<br/>
 
 
  
