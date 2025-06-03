@@ -1,7 +1,7 @@
 # Open-Arcade-layout-tester-and-creator
-New project to create a solid and usable arcade layout creator  [Test](https://battle-monkey.github.io/Open-Arcade-layout-tester-and-creator/Layout%20tester%20and%20creator%20BETA.html)<br/>
+New project to create a solid and usable arcade layout creator  
 The final idea for this project is to create a versatile arcade layout tester and creator, any new idea and modification to get more options and more posibilities are welcome.
-
+You can try it from the following link [Open-Arcade-layout-tester-and-creator](https://battle-monkey.github.io/Open-Arcade-layout-tester-and-creator/Layout%20tester%20and%20creator%20BETA.html)<br/>
 ## WORKFLOW
 
 -Create a double diameter for the buttons, inner diameter fot the hole and outer diameter for the real button diameter.
