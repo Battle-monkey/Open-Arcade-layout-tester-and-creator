@@ -16,6 +16,12 @@ You can try it from the following link [Open-Arcade-layout-tester-and-creator](h
 
 -Create a drag selection tool, capable to select variuos items at the same time and move or center on the canvas
 
+-Export png fuction--------------done
+
+-Posibility of moving elements wi  th 0.5mm steps with keyboard arrows-------------done
+
+-Adding a grid to have some references--------------done
+
 -Layouts to come
 
   -~~Noir~~----------------done
