@@ -1,62 +1,31 @@
 <!DOCTYPE html>
 
-
-
 <html lang="es">
-
-
 
 <head>
 
-
-
     <meta charset="UTF-8">
-
-
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-
     <title>Battlemonkey Layout Template Tester</title>
-
-
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> 
-
-
 
  <style>
 
-
-
         body {
-
-
 
             font-family: 'Inter', sans-serif;
 
-
-
             user-select: none;
-
-
 
             background-color: #000;
                color: #fff;
 
-
-
         }
-
-
-
-
-
 
 
         .layout-area {
@@ -68,138 +37,78 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             border-radius: 0.5rem; 
             transition: width 0.3s, height 0.3s;  
-
         }
 
-
-
-
-
+        /* --- INICIO MEJORA 1: ESTILO DE LA REJILLA --- */
+        .layout-area.grid-active {
+            background-size: 20px 20px;
+            background-image:
+                linear-gradient(to right, #ccc 1px, transparent 1px),
+                linear-gradient(to bottom, #ccc 1px, transparent 1px);
+        }
+        /* --- FIN MEJORA 1 --- */
 
 
         .draggable { 
 
-
-
             position: absolute;
-
-
 
             cursor: grab;
 
-
-
             display: flex;
-
-
 
             align-items: center;
 
-
-
             justify-content: center;
-
-
 
             font-weight: bold;
 
-
-
             font-size: 12px; 
-
-
 
             color: white;
 
-
-
             border-radius: 50%; 
-
-
 
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 
-
-
             border: 2px solid rgba(0,0,0,0.3);
-
-
 
             transition: background-color 0.3s, transform 0.1s, opacity 0.1s, width 0.3s, height 0.3s, left 0.3s, top 0.3s; 
 
-
-
             padding: 2px; 
-
-
 
             box-sizing: border-box;
 
-
-
             text-align: center;
-
-
 
             line-height: 1.2;
 
-
-
         }
-
-
-
-
-
 
 
         .draggable.dragging {
 
-
-
             cursor: grabbing;
-
-
 
             z-index: 1000; 
 
-
-
             transition: none; 
-
-
 
         }
 
-
-
         
-
-
 
         .draggable-image-wrapper {
 
-
-
             position: absolute;
-
-
 
             cursor: grab; 
 
-
-
             border: 1px dashed transparent; 
-
-
 
             transition: border-color 0.3s, width 0.3s, height 0.3s, left 0.3s, top 0.3s;
 
-
-
             overflow: visible; 
-
-
 
         }
 
@@ -207,11 +116,7 @@
 
         .draggable-image-wrapper.dragging {
 
-
-
             transition: none;
-
-
 
         }
 
@@ -219,15 +124,9 @@
 
         .draggable-image-wrapper.selected {
 
-
-
             border-color: #3B82F6; 
 
-
-
             z-index: 0; 
-
-
 
         }
 
@@ -235,11 +134,7 @@
 
         .draggable-image-wrapper.locked {
 
-
-
             cursor: not-allowed; 
-
-
 
         }
 
@@ -247,83 +142,42 @@
 
          .draggable-image-wrapper.locked.selected {
 
-
-
              border-color: #F56565; 
-
-
 
          }
 
 
-
-
-
-
-
         .draggable-image-wrapper img {
-
-
 
             display: block; 
 
-
-
             width: 100%;
-
-
 
             height: 100%;
 
-
-
             pointer-events: none; 
-
-
 
         }
 
-
-
         
-
-
 
         .resize-handle {
 
-
-
             position: absolute;
-
-
 
             width: 10px;
 
-
-
             height: 10px;
-
-
 
             background-color: #1a1a1a; 
 
-
-
             border: 1px solid white;
-
-
 
             border-radius: 2px;
 
-
-
             z-index: 1020; 
 
-
-
             display: none; 
-
-
 
         }
 
@@ -331,11 +185,7 @@
 
         .draggable-image-wrapper.selected:not(.locked) .resize-handle {
 
-
-
             display: block; 
-
-
 
         }
 
@@ -343,241 +193,121 @@
 
         .resize-handle.tl { top: -5px; left: -5px; cursor: nwse-resize; }
 
-
-
         .resize-handle.tr { top: -5px; right: -5px; cursor: nesw-resize; }
 
-
-
         .resize-handle.bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
-
-
 
         .resize-handle.br { bottom: -5px; right: -5px; cursor: nwse-resize; }
 
 
 
 
-
-
-
-
-
-
-
         .button-24mm {
-
-
 
             background-color: #4299E1; 
             z-index: 10; 
 
-
         }
-
-
-
-
-
 
 
         .button-30mm {
 
-
-
             background-color: #ED8936; 
             z-index: 10; 
 
-          
-    
-
         }
-
-
-
-
-
 
 
         .joystick-plate {
 
-
-
             position: absolute;
-
-
 
             cursor: grab;
 
-
-
             border: 2px dashed #718096; 
-
-
 
             background-color: rgba(203, 213, 224, 0.3); 
 
-
-
             display: flex; 
-
-
 
             flex-direction: column;
 
-
-
             align-items: center;
-
-
 
             justify-content: center;
 
-
-
             font-size: 10px; 
-
-
 
             color: #2D3748; 
 
-
-
             text-align: center;
-
-
 
             border-radius: 0.25rem; 
 
-
-
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 
-
-
             transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
-
             z-index: 10; 
-
         }
-
-
 
        
 
-
-
         .joystick-plate.dragging {
-
-
 
             transition: none;
               z-index: 10; 
 
-
         }
 
-
-
         
-
-
 
         .delete-btn { 
 
-
-
             position: absolute;
-
-
 
             top: -10px;
 
-
-
             right: -10px;
-
-
 
             width: 24px;
 
-
-
             height: 24px;
-
-
 
             background-color: #F56565; 
 
-
-
             color: white;
-
-
 
             border-radius: 50%;
 
-
-
             display: flex;
-
-
 
             align-items: center;
 
-
-
             justify-content: center;
-
-
 
             font-size: 14px;
 
-
-
             font-weight: bold;
-
-
 
             cursor: pointer;
 
-
-
             opacity: 0;
-
-
 
             transition: opacity 0.2s;
 
-
-
             z-index: 1010; 
-
-
 
         }
 
-
-
         
-
-
 
         .draggable:hover .delete-btn, 
 
-
-
         .joystick-plate:hover .delete-btn,
-
-
 
         .draggable-image-wrapper:hover .delete-btn {
 
-
-
             opacity: 1;
-
-
 
         }
 
@@ -585,155 +315,76 @@
 
          .draggable-image-wrapper.selected .delete-btn { 
 
-
-
             opacity: 1;
 
-
-
         }
-
-
-
-
-
-
-
 
 
 
 
         .joystick-ball-top {
 
-
-
             position: absolute;
-
-
 
             background-color: rgba(239, 68, 68, 0.7); 
 
-
-
             border: 2px solid rgba(197, 48, 48, 0.8); 
-
-
 
             border-radius: 50%;
 
-
-
             top: 50%;
-
-
 
             left: 50%;
 
-
-
             transform: translate(-50%, -50%); 
-
-
 
             z-index: 10; 
 
-
-
             transition: width 0.3s, height 0.3s;
 
-
-
         }
-
-
-
-
-
 
 
         .mounting-hole {
 
-
-
             position: absolute;
-
-
 
             background-color: #2D3748; 
 
-
-
             border-radius: 50%;
 
-
-
             z-index: 10; 
-
-
 
             transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
 
-
-
         }
-
-
 
         
 
-
-
         .plate-name {
-
-
 
             position: relative; 
 
-
-
             z-index: 10; 
-
-
 
             background-color: rgba(255,255,255,0.6);
 
-
-
             padding: 1px 3px;
-
-
 
             border-radius: 3px;
 
-
-
             font-size: 10px;
-
-
 
             margin-bottom: 2px; 
 
-
-
             color: #2D3748;
 
-
-
         }
-
-
-
-
-
 
 
         .control-button {
 
-
-
             @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105;
-
-
 
         }
 
@@ -741,11 +392,7 @@
 
         .control-button-red {
 
-
-
             @apply bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105;
-
-
 
         }
 
@@ -753,11 +400,7 @@
 
         .control-button-green { 
 
-
-
             @apply bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105;
-
-
 
         }
 
@@ -765,11 +408,7 @@
 
          .control-button-purple {
 
-
-
             @apply bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105;
-
-
 
         }
 
@@ -777,264 +416,164 @@
 
         .control-button-orange { 
 
-
-
             @apply bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-150 ease-in-out transform hover:scale-105;
 
-
-
         }
-
-
-
-
-
 
 
         .control-select, .control-input {
 
-
-
              @apply block w-full bg-gray-800 border border-gray-300 hover:border-gray-400 px-3 py-2 rounded-lg shadow-sm leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed; 
-
-
 
         }
 
-
-
         
-
-
 
         #button-editor-container, #image-controls-container, #canvas-settings-container {
 
-
-
             border-top: 1px solid #e2e8f0;
-
-
 
             margin-top: 0.75rem;
 
-
-
             padding-top: 0.75rem;
 
-
-
         }
-
-
 
         
 
-
-
         #button-editor-container label, #image-controls-container label, #canvas-settings-container label {
-
-
 
              @apply block text-sm font-medium text-gray-700 mb-1;
 
-
-
         }
-
-
-
-
-
 
 
         #button-editor-container input[type="text"],
 
-
-
         #image-controls-container input[type="number"], 
-
-
 
         #image-controls-container input[type="range"],
 
-
-
         #canvas-settings-container input[type="number"],
-
-
 
         #button-editor-container input[type="color"] { 
 
-
-
             @apply control-input mt-0;
 
-
-
         }
-
-
-
-
-
 
 
         #image-controls-container input[type="checkbox"] {
 
-
-
             @apply mr-2 rounded text-blue-600 focus:ring-blue-500;
-
-
 
         }
 
 
-
-
-
-
-
         /* Print Styles */
-
-
 
         @media print {
 
-
-
             @page {
-
                 size: auto;           
-
                 margin: 0; 
-
-                
             }
-
 
 
             body {
-
-
                 font-family: sans-serif; 
                 visibility: hidden;
-
                 margin: 0 !important; 
-
-
-
                 padding: 0 !important; 
-
                 background: white !important;
-
                 -webkit-print-color-adjust: exact !important; 
-
-
-
                 color-adjust: exact !important; 
               }
-#layout-area {
-      transform: scale(2); 
-    transform-origin: top left;
-    visibility: visible;
-    position: relative !important;
-    left: 0;
-    top: 0;
-    transform: none !important;
-    page-break-inside: auto !important;
-    break-inside: auto !important;
 
-
+            #layout-area {
+                transform: scale(2); 
+                transform-origin: top left;
+                visibility: visible;
+                position: relative !important;
+                left: 0;
+                top: 0;
+                transform: none !important;
+                page-break-inside: auto !important;
+                break-inside: auto !important;
             }
-
 
 
             .no-print {
-
                  display: none !important;
-				 
 				 header,
-                 
 				 footer,
-                 
 				 .md\:col-span-1,
-                 
 				 .control-panel,
-                
 				#image-controls-container,
-                 
                 #button-editor-container {
-                  
-        
-
             }
-
 
 
             .layout-area {
                 box-shadow: scale(2)!important;
                 border: none !important;
                  background: white !important;
+                 /* --- MEJORA 1: Ocultar la rejilla al imprimir --- */
+                 background-image: none !important;
 
               position: static !important; /* en lugar de absolute */
               transform:  !important;
               page-break-inside: avoid;
               break-inside: avoid;
-  }
-.layout-area.print-outlines .draggable,
-  .layout-area.print-outlines .button-24mm,
-  .layout-area.print-outlines .button-30mm {
-    background-color: transparent !important;
-    border: 5px solid black !important;
-    color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .layout-area.print-outlines .draggable::before {
-    content: "" !important;
-  }
-
-  .layout-area.print-outlines .joystick-plate {
-    background-color: transparent !important;
-    border:5px dashed black !important;
-    box-shadow: none !important;
-  }
-
-  .layout-area.print-outlines .joystick-ball-top {
-    background-color: transparent !important;
-    border: 5px solid black !important;
-  }
-
-  .layout-area.print-outlines .mounting-hole {
-    background-color: black !important;
-    border: none !important;
-  }
-
-  .layout-area.print-outlines .plate-name {
-    color: black !important;
-    background-color: transparent !important;
-     3px 5px solid black;
-  }
-
-  .layout-area .delete-btn,
-  .resize-handle {
-    display: none !important;
-  }
-
             }
 
+            .layout-area.print-outlines .draggable,
+            .layout-area.print-outlines .button-24mm,
+            .layout-area.print-outlines .button-30mm {
+                background-color: transparent !important;
+                border: 5px solid black !important;
+                color: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .layout-area.print-outlines .draggable::before {
+                content: "" !important;
+            }
+
+            .layout-area.print-outlines .joystick-plate {
+                background-color: transparent !important;
+                border:5px dashed black !important;
+                box-shadow: none !important;
+            }
+
+            .layout-area.print-outlines .joystick-ball-top {
+                background-color: transparent !important;
+                border: 5px solid black !important;
+            }
+
+            .layout-area.print-outlines .mounting-hole {
+                background-color: black !important;
+                border: none !important;
+            }
+
+            .layout-area.print-outlines .plate-name {
+                color: black !important;
+                background-color: transparent !important;
+                3px 5px solid black;
+            }
+
+            .layout-area .delete-btn,
+            .resize-handle {
+                display: none !important;
+            }
+
+            }
 
 
             .draggable, .joystick-plate, .draggable-image-wrapper { 
                  z-index: 10;
-
                 position: absolute !important; 
-
-
-
             }
-
 
 
             .draggable-image-wrapper img { }
@@ -1043,47 +582,24 @@
 
             .resize-handle { 
 
-
-
                 display: none !important;
-
-
 
             }
 
 
-
-
-
-
-
             .layout-area.print-outlines .draggable,
-
-
 
             .layout-area.print-outlines .button-24mm,
 
-
-
             .layout-area.print-outlines .button-30mm {
-
-
 
                 background-color: transparent !important;
 
-
-
                 border: 5px solid black !important; 
-
-
 
                 color: transparent !important; 
 
-
-
                 box-shadow: none !important;
-
-
 
             }
 
@@ -1091,11 +607,7 @@
 
             .layout-area.print-outlines .draggable::before { 
 
-
-
                 content: "" !important;
-
-
 
             }
 
@@ -1103,19 +615,11 @@
 
             .layout-area.print-outlines .joystick-plate {
 
-
-
                 background-color: transparent !important;
-
-
 
                 border: 1.5px dashed black !important; 
 
-
-
                  box-shadow: none !important;
-
-
 
             }
 
@@ -1123,15 +627,9 @@
 
             .layout-area.print-outlines .joystick-ball-top {
 
-
-
                 background-color: transparent !important;
 
-
-
                 border: 5px solid black !important;
-
-
 
             }
 
@@ -1139,15 +637,9 @@
 
              .layout-area.print-outlines .mounting-hole {
 
-
-
                 background-color: black !important; 
 
-
-
                 border: none !important;
-
-
 
             }
 
@@ -1155,19 +647,11 @@
 
             .layout-area.print-outlines .plate-name {
 
-
-
                 color: black !important;
-
-
 
                 background-color: transparent !important;
 
-
-
                 border: 1px solid black; 
-
-
 
             }
 
@@ -1177,375 +661,192 @@
                     z-index: 0 !important;
                     position: absolute !important;
                    display: block !important;
-                  
-
-
             }
-
 
 
             .layout-area .delete-btn {
 
-
-
                 display: none !important; 
-
-
 
             }
 
-
-
         }
-
 
 
         #print-style-block { 
 
-
-
             display: none;
-
-
 
         }
 
 
-
-
-
-
-
     </style>
-
-
 
 </head>
 
-
-
 <body class=""> 
-
-
 
     <style id="print-style-block"></style> 
 
-
-
     <div class="container mx-auto">
-
-
 
         <header class="mb-6 text-center no-print">
 
-
-
             <img src="Battle-Monkey logo.jpg" alt="Battlemonkey Logo" id="app-logo" class="mx-auto mb-4 h-24 w-auto" onerror="this.style.display='none'; console.error('Logo image not found.')">
-
-
 
             <h1 id="app-title" class="text-3xl md:text-4xl font-bold" data-translate-key="appTitle">Battlemonkey Test de Layouts Arcade</h1>
 
-
-
             <p class="mt-1" data-translate-key="appSubtitle">Crea y personaliza tus propios layouts para stick o leverless.</p>
-
-
 
             <p class="text-sm mt-1" data-translate-key="scaleInfo">Área de diseño: <span id="canvas-dims-info">430mm x 300mm</span> | Densidad: <span id="density-info">2</span> px/mm (<span id="density-info-cm">20</span> px/cm).</p>
 
-
-
             <div class="mt-2 flex justify-center items-center space-x-4">
-
-
 
                 <div>
 
-
-
                     <label for="language-switcher" class="text-sm font-medium" data-translate-key="languageLabel">Idioma:</label>
-
-
 
                     <select id="language-switcher" class="control-select w-auto inline-block ml-2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1">
 
-
-
                         <option value="es">Español</option>
-
-
 
                         <option value="en">English</option>
 
-
-
                         <option value="it">Italiano</option>
-
-
 
                         <option value="fr">Français</option>
 
-
-
                         <option value="de">Deutsch</option>
-
-
 
                     </select>
 
-
-
                 </div>
 
-
-
             </div>
-
-
 
         </header>
 
 
-
-
-
-
-
         <div class="flex justify-center min-h-screen">
-
-
 
             <div class="w-full md:w-auto grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
 
-
-
                 <div class="md:col-span-1 bg-gray-800 p-6 rounded-lg shadow-lg no-print"> 
-
-
 
                     <h2 class="text-xl font-semibold mb-4" data-translate-key="controlsTitle">Controles</h2>
 
-
-
                     
-
-
 
                     <div id="canvas-settings-container">
 
-
-
                         <h3 class="text-lg font-semibold mb-2" data-translate-key="canvasSettingsTitle">Configuración del Lienzo</h3>
-
-
 
                     <div class="flex gap-1 mb-1">
 
-
-
                     <div class="flex gap-1">
-
-
 
                     <label for="canvas-width-mm" class="text-center" data-translate-key="canvasWidthLabel">Ancho (mm):</label>
 
-
-
                     <input type="number" id="canvas-width-mm" class="control-input w-1/2 bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" value="430" min="50">
 
-
-
                     </div>
-
-
 
                     <div class="flex gap-1">
 
-
-
                     <label for="canvas-height-mm" class="text-center" data-translate-key="canvasHeightLabel">Alto (mm):</label>
-
-
 
                     <input type="number" id="canvas-height-mm" class="control-input w-1/2 bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" value="300" min="50">
 
-
-
                     </div>
-
-
 
                      </div>
 
-
-
                         <div class="my-3">
-
-
 
                             <label for="pixel-density-cm" data-translate-key="pixelDensityLabel">Píxeles por cm:</label>
 
-
-
                             <input type="number" id="pixel-density-cm" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" value="20" min="5" max="200">
-
-
 
                         </div>
 
-
-
                         <button id="apply-canvas-settings" class="control-button w-full bg-red-500 hover:bg-red-700 rounded px-2 py-1" data-translate-key="applyCanvasSettingsBtn">Aplicar Configuración Lienzo</button>
 
-
-
                     </div>
-
-
-
-
-
 
 
                     <div class="space-y-3 mt-4 pt-4 border-t flex flex-col items-center">
 
-
-
                         <button id="add-24mm" class="control-button w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="add24mm">Añadir Botón 24mm</button>
-
-
 
                         <button id="add-30mm" class="control-button w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="add30mm">Añadir Botón 30mm</button>
 
-
                       <hr class="my-3">
-
-
 
                         <button id="add-jlf" class="control-button-purple w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="addJlf">Añadir Sanwa JLF</button>
 
-
-
                         <button id="add-crown309" class="control-button-purple w-1/2 bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="addCrown">Añadir Crown 309</button>
                         
-
-
-
                     <hr class="my-3">
 
-
-
                          <label for="image-loader" class="control-button w-full bg-red-500 hover:bg-red-700 text-center rounded px-2 py-1" data-translate-key="loadImageBtn">Cargar Imagen</label>
-
-
 
                          <input type="file" id="image-loader" style="display: none;">
 
 
-
-
-
-
-
                         <div class="flex gap-2">
-
-
 
                         <button id="save-layout-btn" class="control-button-purple w-1/2" data-translate-key="saveLayoutBtn">Guardar</button>
 
-
-
                         <label for="load-layout-input" class="control-button-purple w-1/2 cursor-pointer" data-translate-key="loadSavedLayoutBtn">Cargar</label>
-
-
 
                         </div>
 
 
-
-
-
-
-
                         <input type="file" id="load-layout-input" accept=".json" class="hidden">
 
-
-
                         <hr class="my-3">
-
-
-
-
-
-
-
-
 
 
 
                         <label for="preset-layouts" class="block text-sm font-medium" data-translate-key="presetLayoutsLabel">Layouts Predefinidos:</label>
 
-
-
                         <select id="preset-layouts" class="control-select bg-gray-700 text-white border border-gray-200 rounded px-2 py-1"">
-
-
 
                             <option value="" data-translate-key="selectLayout">Seleccionar layout...</option>
 
-
-
                         </select>
-
-
 
                         <button id="load-preset" class="control-button w-full bg-red-500 hover:bg-red-700 rounded px-2 py-1" data-translate-key="loadPreset">Cargar Layout</button>
 
 
-
-
-
                         <hr class="my-3">
-
-
 
                         <button id="print-layout" class="control-button w-full bg-red-500 hover:bg-red-700 rounded px-2 py-1" data-translate-key="printLayout">Imprimir Layout</button>
 
-
-
                         <div class="flex items-center">
-
-
 
                             <input type="checkbox" id="print-outlines-only" class="mr-2 rounded">
 
-
-
                             <label for="print-outlines-only" class="text-sm" data-translate-key="printOutlinesLabel">Imprimir solo contornos</label>
 
-
-
                         </div>
-
-
-
+                        
+                        <div class="flex items-center mt-2">
+                            <input type="checkbox" id="show-grid-checkbox" class="mr-2 rounded">
+                            <label for="show-grid-checkbox" class="text-sm" data-translate-key="showGridLabel">Mostrar Rejilla</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="snap-to-grid-checkbox" class="mr-2 rounded">
+                            <label for="snap-to-grid-checkbox" class="text-sm" data-translate-key="snapToGridLabel">Ajustar a Rejilla</label>
+                        </div>
                         <hr class="my-3">
-
-
 
                         <button id="clear-layout" class="control-button-red w-full bg-gray-800 text-white border border-gray-600 rounded px-2 py-1" data-translate-key="clearLayout">Limpiar Diseño</button>
 
-
-
                     </div>
 
+                    <div id="floating-editor-panel" class="hidden fixed top-4 right-4 w-64 max-h-[90vh] overflow-y-auto bg-gray-900 text-white p-3 rounded-lg shadow-2xl z-50">
 
-
-                    <!--  Panel flotante lateral derecho -->
-<div id="floating-editor-panel" class="hidden fixed top-4 right-4 w-64 max-h-[90vh] overflow-y-auto bg-gray-900 text-white p-3 rounded-lg shadow-2xl z-50">
-
-  <!-- 🎛 Propiedades del Botón -->
   <div id="button-editor-container" class="hidden">
     <h3 class="text-lg font-semibold mb-2" data-translate-key="buttonPropertiesTitle">Propiedades del Botón</h3>
 
@@ -1576,7 +877,6 @@
     </div>
   </div>
 
-  <!-- 🎮 Propiedades de la Palanca -->
   <div id="joystick-editor-container" class="hidden">
     <h3 class="text-lg font-semibold mb-2" data-translate-key="joystick_properties">Propiedades de la Palanca</h3>
 
@@ -1591,7 +891,6 @@
     </div>
   </div>
 
-  <!-- 🖼 Propiedades de Imagen -->
   <div id="image-controls-container" class="hidden">
     <h3 class="text-lg font-semibold mb-2" data-translate-key="imagePropertiesTitle">Propiedades de Imagen</h3>
 
@@ -1626,4074 +925,1385 @@
 
 </div>
 
-
-
                 </div>
-
-
-
-
-
 
 
       <div class="md:col-span-3"> 
 
-
-
                     <div id="layout-area" class="layout-area">
-
-
 
                     </div>
 
-
-
                 </div>
-
-
 
             </div>
 
-
         </div>
-
-
 
         
 
-
-
         <footer class="text-center mt-8 text-sm no-print">
-
-
 
             <p data-translate-key="footerDragDrop">Arrastra los elementos para posicionarlos. Haz clic en un botón para cambiar su color/etiqueta. Haz clic en la 'X' para eliminarlos.</p>
 
-
-
             <p data-translate-key="printNote">Nota sobre impresión: Para una escala precisa, asegúrate de que la configuración de tu impresora esté en "Tamaño Real" o "Escala 100%".</p>
-
-
 
             <p class="mt-2">Esta aplicación está desarrollada por Battle-Monkey y ScorpioN MsX</p>
 
-
-
         </footer>
-
-
 
     </div>
 
 
-
-
-
-
-
     <script>
-
-
          // Scorpion-MsX  Fix Script \\
         // Constants and Global Variables 
 
-
-
         const layoutArea = document.getElementById('layout-area');
-
-
 
         const languageSwitcher = document.getElementById('language-switcher');
 
-
-
         const controlsPanel = document.querySelector('.md\\:col-span-1'); 
 
-
-
         const imageLoaderInput = document.getElementById('image-loader');
-
-
 
         const imageLoaderBtn = document.querySelector('label[for="image-loader"]'); 
 
 
-
-
-
-
-
         const imageControlsContainer = document.getElementById('image-controls-container');
-
-
 
         const imageScaleInput = document.getElementById('image-scale');
 
-
-
         const imageRotateInput = document.getElementById('image-rotate');
-
-
 
         const imageOpacityInput = document.getElementById('image-opacity');
 
-
-
         const imageVisibleCheckbox = document.getElementById('image-visible');
-
-
 
         const imageLockCheckbox = document.getElementById('image-lock'); 
 
-
-
         const centerImageBtn = document.getElementById('center-image'); 
-
-
 
         const deleteImageBtn = document.getElementById('delete-image');
 
 
-
-
-
-
-
         const canvasWidthInput = document.getElementById('canvas-width-mm');
-
-
 
         const canvasHeightInput = document.getElementById('canvas-height-mm');
 
-
-
         const pixelDensityInput = document.getElementById('pixel-density-cm');
-
-
 
         const applyCanvasSettingsBtn = document.getElementById('apply-canvas-settings');
 
-
-
         const canvasDimsInfoEl = document.getElementById('canvas-dims-info');
-
-
 
         const densityInfoEl = document.getElementById('density-info');
 
-
-
         const densityInfoCmEl = document.getElementById('density-info-cm');
-
-
 
         const printStyleBlock = document.getElementById('print-style-block');
 
 
-
-
-
-
-
         const buttonEditorContainer = document.getElementById('button-editor-container');
 
-
-
         const buttonLabelInput = document.getElementById('button-label-input');
-
-
 
         const buttonColorInputEditor = document.getElementById('button-color-input-editor');
 
 
-
-
-
-
-
         const saveLayoutBtn = document.getElementById('save-layout-btn');
 
-
-
         const loadLayoutInput = document.getElementById('load-layout-input');
-
-
 
         const loadLayoutBtn = document.querySelector('label[for="load-layout-input"]');
 
 
-
-
-
-
-
-
-
+        // --- INICIO MEJORA 1: CONSTANTES Y REFERENCIAS AL DOM ---
+        const showGridCheckbox = document.getElementById('show-grid-checkbox');
+        const snapToGridCheckbox = document.getElementById('snap-to-grid-checkbox');
+        const GRID_SIZE_PX = 20;
+        // --- FIN MEJORA 1 ---
 
 
         let draggedItem = null;
 
-
-
         let offsetXDragging, offsetYDragging;
-
-
 
         let elementIdCounter = 0;
 
-
-
+        // Variables de estado de selección única
         let selectedButtonForEditor = null; 
-
-
-
         let selectedImageElement = null;
-
-
-
-
-
+        let selectedJoystick = null;
 
 
         let isResizing = false;
 
-
-
         let resizeHandle = null;
-
-
 
         let startX, startY;
 
-
-
         let initialWidth, initialHeight, initialLeft, initialTop;
-
-
 
         let initialRatio;
 
 
-
-
-
-
-
         let current_PX_PER_MM = 2; 
 
-
-
         let canvasPhysicalWidthMM = 430;
-
-
 
         let canvasPhysicalHeightMM = 300;
 
 
-
-
-
-
-
-
-
-
-
         const translations = {
 
-
-
             es: {
-
-
-
                 appTitle: "Battlemonkey Test de Layouts Arcade", 
-
-
-
                 appSubtitle: "Crea y personaliza tus propios layouts para stick o leverless.",
-
-
-
                 scaleInfo: `Área de diseño: <span id="canvas-dims-info">${canvasPhysicalWidthMM}mm x ${canvasPhysicalHeightMM}mm</span> | Densidad: <span id="density-info">${current_PX_PER_MM}</span> px/mm (<span id="density-info-cm">${current_PX_PER_MM*10}</span> px/cm).`,
-
-
-
                 languageLabel: "Idioma:",
-
-
-
                 controlsTitle: "Controles",
-
-
-
                 canvasSettingsTitle: "Configuración del Lienzo",
-
-
-
                 canvasWidthLabel: "Ancho (mm):",
-
-
-
                 canvasHeightLabel: "Alto (mm):",
-
-
-
                 pixelDensityLabel: "Píxeles por cm:",
-
-
-
                 applyCanvasSettingsBtn: "Aplicar Configuración Lienzo",
-
-
-
                 add24mm: "Añadir Botón 24mm",
-
-
-
                 add30mm: "Añadir Botón 30mm",
-
-
-
                 loadImageBtn: "Cargar Imagen",
-
-
-
                 saveLayoutBtn: "Guardar Layout Personalizado",
-
-
-
                 loadSavedLayoutBtn: "Cargar Layout Personalizado",
-
-
-
                 presetLayoutsLabel: "Layouts Predefinidos:",
-
-
-
                 selectLayout: "Seleccionar layout...",
-
-
-
                 loadPreset: "Cargar Layout",
-
-
-
                 addJlf: "Añadir Sanwa JLF",
-
-
-
                 addCrown: "Añadir Crown 309",
-
-
-
                 printLayout: "Imprimir Layout",
-
-
-
                 printOutlinesLabel: "Imprimir solo contornos",
-
-
-
                 clearLayout: "Limpiar Diseño",
-
-
-
                 footerDragDrop: "Arrastra los elementos para posicionarlos. Haz clic en un botón para cambiar su color/etiqueta. Haz clic en la 'X' para eliminarlos.",
-
-
-
                 printNote: "Nota sobre impresión: Para una escala precisa, asegúrate de que la configuración de tu impresora esté en \"Tamaño Real\" o \"Escala 100%\".",
-
-
-
                 confirmClear: "¿Estás seguro de que quieres limpiar todo el diseño?",
-
-
-
                 confirmLoadPreset: "Esto limpiará el diseño actual y cargará el layout seleccionado. ¿Continuar?",
-
-
-
                 alertSelectPreset: "Por favor, selecciona un layout predefinido válido.",
-
-
-
                 buttonPropertiesTitle: "Propiedades del Botón", 
-
-
-
                 buttonLabelLabel: "Etiqueta del Botón:", 
-
-
-
                 buttonColorLabel: "Color del Botón:", 
-
-               
-			   joystick_properties: "Propiedades de la Palanca",
-               pos_x: "Posición X (mm)",
-               pos_y: "Posición Y (mm)",
-
+			    joystick_properties: "Propiedades de la Palanca",
+                pos_x: "Posición X (mm)",
+                pos_y: "Posición Y (mm)",
                 imagePropertiesTitle: "Propiedades de Imagen",
-
-
-
                 imageScaleLabel: "Escala (%):",
-
-
-
                 imageRotateLabel: "Rotación (°):",
-
-
-
                 imageOpacityLabel: "Opacidad (%):",
-
-
-
                 imageVisibleLabel: "Visible",
-
-
-
                 imageLockLabel: "Bloquear Imagen", 
-
-
-
                 centerImageBtn: "Centrar Imagen", 
-
-
-
-                deleteImageBtn: "Eliminar Imagen"
-
-
-
+                deleteImageBtn: "Eliminar Imagen",
+                // --- INICIO MEJORA 1: TRADUCCIONES ---
+                showGridLabel: "Mostrar Rejilla",
+                snapToGridLabel: "Ajustar a Rejilla",
+                // --- FIN MEJORA 1 ---
             },
 
-
-
             en: { 
-
-
-
                 appTitle: "Battlemonkey Layout Template Tester",
-
-
-
                 appSubtitle: "Create and customize your own stick or leverless layouts.",
-
-
-
                 scaleInfo: `Design Area: <span id="canvas-dims-info">${canvasPhysicalWidthMM}mm x ${canvasPhysicalHeightMM}mm</span> | Density: <span id="density-info">${current_PX_PER_MM}</span> px/mm (<span id="density-info-cm">${current_PX_PER_MM*10}</span> px/cm).`,
-
-
-
                 languageLabel: "Language:",
-
-
-
                 controlsTitle: "Controls",
-
-
-
                 canvasSettingsTitle: "Canvas Settings",
-
-
-
                 canvasWidthLabel: "Width (mm):",
-
-
-
                 canvasHeightLabel: "Height (mm):",
-
-
-
                 pixelDensityLabel: "Pixels per cm:",
-
-
-
                 applyCanvasSettingsBtn: "Apply Canvas Settings",
-
-
-
                 add24mm: "Add 24mm Button",
-
-
-
                 add30mm: "Add 30mm Button",
-
-
-
                 loadImageBtn: "Load Image",
-
-
-
                 saveLayoutBtn: "Save Custom Layout",
-
-
-
                 loadSavedLayoutBtn: "Load Custom Layout",
-
-
-
                 presetLayoutsLabel: "Preset Layouts:",
-
-
-
                 selectLayout: "Select layout...",
-
-
-
                 loadPreset: "Load Layout",
-
-
-
                 addJlf: "Add Sanwa JLF",
-
-
-
                 addCrown: "Add Crown 309",
-
-
-
                 printLayout: "Print Layout",
-
-
-
                 printOutlinesLabel: "Print outlines only",
-
-
-
                 clearLayout: "Clear Design",
-
-
-
                 footerDragDrop: "Drag elements to position them. Click a button to change its color/label. Click the 'X' to delete them.",
-
-
-
                 printNote: "Note on printing: For accurate scaling, ensure your printer settings are set to \"Actual Size\" or \"100% Scale\".",
-
-
-
                 confirmClear: "Are you sure you want to clear the entire design?",
-
-
-
                 confirmLoadPreset: "This will clear the current design and load the selected layout. Continue?",
-
-
-
                 alertSelectPreset: "Please select a valid preset layout.",
-
-
-
                 buttonPropertiesTitle: "Button Properties", 
-
-
-
                 buttonLabelLabel: "Button Label:", 
-
-
-
                 buttonColorLabel: "Button Color:",
-
                 joystick_properties: "Joystick Properties",
                 pos_x: "Position X (mm)",
                 pos_y: "Position Y (mm)",
-
                 imagePropertiesTitle: "Image Properties",
-
-
-
                 imageScaleLabel: "Scale (%):",
-
-
-
                 imageRotateLabel: "Rotation (°):",
-
-
-
                 imageOpacityLabel: "Opacity (%):",
-
-
-
                 imageVisibleLabel: "Visible",
-
-
-
                 imageLockLabel: "Lock Image", 
-
-
-
                 centerImageBtn: "Center Image", 
-
-
-
-                deleteImageBtn: "Delete Image"
-
-
-
+                deleteImageBtn: "Delete Image",
+                // --- INICIO MEJORA 1: TRADUCCIONES ---
+                showGridLabel: "Show Grid",
+                snapToGridLabel: "Snap to Grid",
+                // --- FIN MEJORA 1 ---
             },
 
-
-
-             it: { 
-
-
-
+            it: { 
                 appTitle: "Battlemonkey Test di Layout Arcade", 
-
-
-
                 appSubtitle: "Crea e personalizza i tuoi layout per stick o leverless.",
-
-
-
                 scaleInfo: `Area di Progettazione: <span id="canvas-dims-info">${canvasPhysicalWidthMM}mm x ${canvasPhysicalHeightMM}mm</span> | Densità: <span id="density-info">${current_PX_PER_MM}</span> px/mm (<span id="density-info-cm">${current_PX_PER_MM*10}</span> px/cm).`,
-
-
-
                 languageLabel: "Lingua:",
-
-
-
                 controlsTitle: "Controlli",
-
-
-
                 canvasSettingsTitle: "Impostazioni Tela",
-
-
-
                 canvasWidthLabel: "Larghezza (mm):",
-
-
-
                 canvasHeightLabel: "Altezza (mm):",
-
-
-
                 pixelDensityLabel: "Pixel per cm:",
-
-
-
                 applyCanvasSettingsBtn: "Applica Impostazioni Tela",
-
-
-
                 add24mm: "Aggiungi Pulsante 24mm",
-
-
-
                 add30mm: "Aggiungi Pulsante 30mm",
-
-
-
                 loadImageBtn: "Carica Immagine",
-
-
-
                 saveLayoutBtn: "Salva Layout Personalizzato",
-
-
-
                 loadSavedLayoutBtn: "Carica Layout Personalizzato",
-
-
-
                 presetLayoutsLabel: "Layout Predefiniti:",
-
-
-
                 selectLayout: "Seleziona layout...",
-
-
-
                 loadPreset: "Carica Layout",
-
-
-
                 addJlf: "Aggiungi Sanwa JLF",
-
-
-
                 addCrown: "Aggiungi Crown 309",
-
-
-
                 printLayout: "Stampa Layout",
-
-
-
                 printOutlinesLabel: "Stampa solo contorni",
-
-
-
                 clearLayout: "Pulisci Design",
-
-
-
                 footerDragDrop: "Trascina gli elementi per posizionarli. Clicca un pulsante per cambiarne il colore/etichetta. Clicca la 'X' per eliminarli.",
-
-
-
                 printNote: "Nota sulla stampa: per un ridimensionamento accurato, assicurati che le impostazioni della stampante siano impostate su \"Dimensioni effettive\" o \"Scala 100%\".",
-
-
-
                 confirmClear: "Sei sicuro di voler cancellare l'intero design?",
-
-
-
                 confirmLoadPreset: "Questo cancellerà il design corrente e caricherà il layout selezionato. Continuare?",
-
-
-
                 alertSelectPreset: "Per favore seleziona un layout predefinito valido.",
-
-
-
                 buttonPropertiesTitle: "Proprietà Pulsante", 
-
-
-
                 buttonLabelLabel: "Etichetta Pulsante:", 
-
-
-
                 buttonColorLabel: "Colore Pulsante:",
-
                 joystick_properties: "Proprietà del joystick",
                 pos_x: "Posizione X (mm)",
-                pos_y: "Posizione Y (mm)",
-
+                pos_y: "Position Y (mm)",
                 imagePropertiesTitle: "Proprietà Immagine",
-
-
-
                 imageScaleLabel: "Scala (%):",
-
-
-
                 imageRotateLabel: "Rotazione (°):",
-
-
-
                 imageOpacityLabel: "Opacità (%):",
-
-
-
                 imageVisibleLabel: "Visibile",
-
-
-
                 imageLockLabel: "Blocca Immagine", 
-
-
-
                 centerImageBtn: "Centra Immagine", 
-
-
-
-                deleteImageBtn: "Elimina Immagine"
-
-
-
+                deleteImageBtn: "Elimina Immagine",
+                // --- INICIO MEJORA 1: TRADUCCIONES ---
+                showGridLabel: "Mostra Griglia",
+                snapToGridLabel: "Aggancia alla Griglia",
+                // --- FIN MEJORA 1 ---
             },
 
-
-
             fr: { 
-
-
-
                 appTitle: "Battlemonkey Test de Layouts Arcade", 
-
-
-
                 appSubtitle: "Créez et personnalisez vos propres layouts pour stick ou leverless.",
-
-
-
                 scaleInfo: `Zone de Conception: <span id="canvas-dims-info">${canvasPhysicalWidthMM}mm x ${canvasPhysicalHeightMM}mm</span> | Densité: <span id="density-info">${current_PX_PER_MM}</span> px/mm (<span id="density-info-cm">${current_PX_PER_MM*10}</span> px/cm).`,
-
-
-
                 languageLabel: "Langue:",
-
-
-
                 controlsTitle: "Contrôles",
-
-
-
                 canvasSettingsTitle: "Paramètres du Canevas",
-
-
-
                 canvasWidthLabel: "Largeur (mm):",
-
-
-
                 canvasHeightLabel: "Hauteur (mm):",
-
-
-
                 pixelDensityLabel: "Pixels par cm:",
-
-
-
                 applyCanvasSettingsBtn: "Appliquer Paramètres Canevas",
-
-
-
                 add24mm: "Ajouter Bouton 24mm",
-
-
-
                 add30mm: "Ajouter Bouton 30mm",
-
-
-
                 loadImageBtn: "Charger Image",
-
-
-
                 saveLayoutBtn: "Enregistrer Layout Personnalisé",
-
-
-
                 loadSavedLayoutBtn: "Charger Layout Personnalisé",
-
-
-
                 presetLayoutsLabel: "Layouts Prédéfinis:",
-
-
-
                 selectLayout: "Sélectionner layout...",
-
-
-
                 loadPreset: "Charger Layout",
-
-
-
                 addJlf: "Ajouter Sanwa JLF",
-
-
-
                 addCrown: "Ajouter Crown 309",
-
-
-
                 printLayout: "Imprimer Layout",
-
-
-
                 printOutlinesLabel: "Imprimer uniquement les contours",
-
-
-
                 clearLayout: "Effacer Design",
-
-
-
                 footerDragDrop: "Faites glisser les éléments pour les positionner. Cliquez sur un bouton pour changer sa couleur/étiquette. Cliquez sur le 'X' pour les supprimer.",
-
-
-
                 printNote: "Remarque sur l'impression : Pour une mise à l'échelle précise, assurez-vous que les paramètres de votre imprimante sont réglés sur « Taille réelle » ou « Échelle 100 % ».",
-
-
-
                 confirmClear: "Êtes-vous sûr de vouloir effacer l'ensemble du design ?",
-
-
-
                 confirmLoadPreset: "Cela effacera le design actuel et chargera le layout sélectionné. Continuer ?",
-
-
-
                 alertSelectPreset: "Veuillez sélectionner un layout prédéfini valide.",
-
-
-
                 buttonPropertiesTitle: "Propriétés du Bouton", 
-
-
-
                 buttonLabelLabel: "Étiquette du Bouton:", 
-
-
-
                 buttonColorLabel: "Couleur du Bouton:",
-
                 joystick_properties: "Propriétés du joystick",
                 pos_x: "Position X (mm)",
                 pos_y: "Position Y (mm)",
-
                 imagePropertiesTitle: "Propriétés de l'image",
-
-
-
                 imageScaleLabel: "Échelle (%):",
-
-
-
                 imageRotateLabel: "Rotation (°):",
-
-
-
                 imageOpacityLabel: "Opacité (%):",
-
-
-
                 imageVisibleLabel: "Visible",
-
-
-
                 imageLockLabel: "Verrouiller Image", 
-
-
-
                 centerImageBtn: "Centrer Image", 
-
-
-
-                deleteImageBtn: "Supprimer Image"
-
-
-
+                deleteImageBtn: "Supprimer Image",
+                // --- INICIO MEJORA 1: TRADUCCIONES ---
+                showGridLabel: "Afficher la Grille",
+                snapToGridLabel: "Aligner sur la Grille",
+                // --- FIN MEJORA 1 ---
             },
 
-
-
             de: { 
-
-
-
                 appTitle: "Battlemonkey Arcade-Layout-Test", 
-
-
-
                 appSubtitle: "Erstellen und anpassen Sie Ihre eigenen Stick- oder Leverless-Layouts.",
-
-
-
                 scaleInfo: `Designbereich: <span id="canvas-dims-info">${canvasPhysicalWidthMM}mm x ${canvasPhysicalHeightMM}mm</span> | Dichte: <span id="density-info">${current_PX_PER_MM}</span> px/mm (<span id="density-info-cm">${current_PX_PER_MM*10}</span> px/cm).`,
-
-
-
                 languageLabel: "Sprache:",
-
-
-
                 controlsTitle: "Steuerung",
-
-
-
                 canvasSettingsTitle: "Leinwand-Einstellungen",
-
-
-
                 canvasWidthLabel: "Breite (mm):",
-
-
-
                 canvasHeightLabel: "Höhe (mm):",
-
-
-
                 pixelDensityLabel: "Pixel pro cm:",
-
-
-
                 applyCanvasSettingsBtn: "Leinwand-Einstellungen anwenden",
-
-
-
                 add24mm: "24mm Button hinzufügen",
-
-
-
                 add30mm: "30mm Button hinzufügen",
-
-
-
                 loadImageBtn: "Bild laden",
-
-
-
                 saveLayoutBtn: "Benutzerdefiniertes Layout speichern",
-
-
-
                 loadSavedLayoutBtn: "Benutzerdefiniertes Layout laden",
-
-
-
                 presetLayoutsLabel: "Voreingestellte Layouts:",
-
-
-
                 selectLayout: "Layout auswählen...",
-
-
-
                 loadPreset: "Layout laden",
-
-
-
                 addJlf: "Sanwa JLF hinzufügen",
-
-
-
                 addCrown: "Crown 309 hinzufügen",
-
-
-
                 printLayout: "Layout drucken",
-
-
-
                 printOutlinesLabel: "Nur Umrisse drucken",
-
-
-
                 clearLayout: "Design löschen",
-
-
-
                 footerDragDrop: "Ziehen Sie Elemente, um sie zu positionieren. Klicken Sie auf einen Button, um seine Farbe/Beschriftung zu ändern. Klicken Sie auf das 'X', um sie zu löschen.",
-
-
-
                 printNote: "Hinweis zum Drucken: Stellen Sie für eine genaue Skalierung sicher, dass Ihre Druckereinstellungen auf „Tatsächliche Größe“ oder „100 % Skalierung“ eingestellt sind.",
-
-
-
                 confirmClear: "Sind Sie sicher, dass Sie das gesamte Design löschen möchten?",
-
-
-
                 confirmLoadPreset: "Dadurch wird das aktuelle Design gelöscht und das ausgewählte Layout geladen. Fortfahren?",
-
-
-
                 alertSelectPreset: "Bitte wählen Sie ein gültiges voreingestelltes Layout aus.",
-
-
-
                 buttonPropertiesTitle: "Button-Eigenschaften", 
-
-
-
                 buttonLabelLabel: "Button-Beschriftung:", 
-
-
-
                 buttonColorLabel: "Button-Farbe:",
-
                 joystick_properties: "Joystick-Eigenschaften",
                 pos_x: "Position X (mm)",
                 pos_y: "Position Y (mm)",
-
                 imagePropertiesTitle: "Bildeigenschaften",
-
-
-
                 imageScaleLabel: "Skalierung (%):",
-
-
-
                 imageRotateLabel: "Drehung (°):",
-
-
-
                 imageOpacityLabel: "Deckkraft (%):",
-
-
-
                 imageVisibleLabel: "Sichtbar",
-
-
-
                 imageLockLabel: "Bild sperren", 
-
-
-
                 centerImageBtn: "Bild zentrieren", 
-
-
-
-                deleteImageBtn: "Bild löschen"
-
-
-
+                deleteImageBtn: "Bild löschen",
+                // --- INICIO MEJORA 1: TRADUCCIONES ---
+                showGridLabel: "Gitter anzeigen",
+                snapToGridLabel: "Am Gitter ausrichten",
+                // --- FIN MEJORA 1 ---
             }
-
-
 
         };
 
-
-
         
-
-
-
         let currentLang = 'es';
-
-
-
-
-
 
 
         function updateScaleInfoText() {
 
-
-
             const lang = currentLang;
-
-
 
             const scaleInfoTemplate = translations[lang].scaleInfo;
 
-
-
             const newText = scaleInfoTemplate
-
-
-
                 .replace(/<span id="canvas-dims-info">.*?<\/span>/, `<span id="canvas-dims-info">${canvasPhysicalWidthMM}mm x ${canvasPhysicalHeightMM}mm</span>`)
-
-
-
                 .replace(/<span id="density-info">.*?<\/span>/, `<span id="density-info">${current_PX_PER_MM.toFixed(2)}</span>`)
-
-
-
                 .replace(/<span id="density-info-cm">.*?<\/span>/, `<span id="density-info-cm">${(current_PX_PER_MM * 10).toFixed(1)}</span>`);
-
-
 
             document.querySelector('[data-translate-key="scaleInfo"]').innerHTML = newText;
 
-
-
         }
-
-
-
-
-
-
-
-
 
 
 
         function translateUI(lang) {
 
-
-
             currentLang = lang;
-
-
 
             document.documentElement.lang = lang;
 
-
-
             const elementsToTranslate = document.querySelectorAll('[data-translate-key]');
-
-
 
             elementsToTranslate.forEach(el => {
 
-
-
                 const key = el.dataset.translateKey;
-
-
 
                 if (translations[lang] && translations[lang][key]) {
 
-
-
                     const translationText = translations[lang][key];
 
-
-
                     if (key === "scaleInfo") { 
-
-
-
                        updateScaleInfoText(); 
-
-
-
-                    } else if (el.tagName === 'BUTTON' || (el.tagName === 'LABEL' && (el.htmlFor === 'button-color-input-editor' || el.htmlFor === 'button-label-input' || el.htmlFor === 'image-loader' || el.htmlFor === 'image-lock' || el.htmlFor === 'image-visible' || el.htmlFor === 'print-outlines-only' || el.htmlFor === 'load-layout-input' ))) {
-
-
-
+                    } else if (el.tagName === 'BUTTON' || (el.tagName === 'LABEL' && (el.htmlFor.includes('input') || el.htmlFor.includes('checkbox') ))) {
                         el.textContent = translationText;
-
-
-
                     } else if (el.tagName === 'OPTION' && el.value === "") { 
-
-
-
                          el.textContent = translationText;
-
-
-
                     } else if (el.dataset.translateKey === "printNote") { 
-
-
-
                         el.innerHTML = translationText;
-
-
-
                     }
-
-
-
                     else {
-
-
-
                         el.innerHTML = translationText; 
-
-
-
                     }
-
-
-
                 }
-
-
-
             });
-
-
 
             const presetOptions = document.querySelectorAll('#preset-layouts option');
 
-
-
             presetOptions.forEach(option => {
-
-
-
                 if (option.value && presets[option.value] && presets[option.value].name) { 
-
-
-
                     option.textContent = presets[option.value].name[lang] || presets[option.value].name['en'] || option.value; 
-
-
-
                 }
-
-
-
             });
-
-
-
         }
 
-
-
         
-
-
-
         languageSwitcher.addEventListener('change', (e) => {
-
-
-
             translateUI(e.target.value);
-
-
-
         });
-
-
-
-
-
-
-
-
 
 
 
         function addDeleteButtonToElement(element, onDeleteCallback) {
 
-
-
             const deleteBtn = document.createElement('div');
-
-
 
             deleteBtn.classList.add('delete-btn');
 
-
-
             deleteBtn.innerHTML = '&times;';
-
-
 
             deleteBtn.addEventListener('click', (e) => {
 
-
-
                 e.stopPropagation(); 
 
-
-
                 if (onDeleteCallback) {
-
-
-
                     onDeleteCallback(element);
-
-
-
                 } else {
-
-
-
                     element.remove();
-
-
-
                 }
-
-
 
                 if (element === selectedImageElement) {
-
-
-
                     deselectImage();
-
-
-
                 }
-
-
 
                 if (element === selectedButtonForEditor) {
-
-
-
                     hideButtonEditor();
-
-
-
                 }
-
-
-
+                 if (element === selectedJoystick) {
+                    hideJoystickEditor();
+                }
             });
-
-
 
             element.appendChild(deleteBtn);
 
-
-
         }
-
-
-
-
-
-
-
-
 
 
 
         function baseCreateElement(options = {}) {
 
-
-
             const id = `element-${elementIdCounter++}`;
-
-
 
             const el = document.createElement('div');
 
-
-
             el.id = id;
-
-
 
             el.dataset.physicalXMm = options.physicalXMm || (options.x / current_PX_PER_MM) || 50 / current_PX_PER_MM;
 
-
-
             el.dataset.physicalYMm = options.physicalYMm || (options.y / current_PX_PER_MM) || 50 / current_PX_PER_MM;
 
-
-
             
-
-
-
             el.style.left = `${parseFloat(el.dataset.physicalXMm) * current_PX_PER_MM}px`;
-
-
 
             el.style.top = `${parseFloat(el.dataset.physicalYMm) * current_PX_PER_MM}px`;
 
-
-
             
-
-
-
             makeDraggable(el); 
 
-
-
             return el;
-
-
 
         }
 
 
-
-
-
-
-
         function createButton(diameterMM, physicalXMm, physicalYMm, color = null, label = null) {
-
-
 
             const button = baseCreateElement({ physicalXMm, physicalYMm }); 
 
-
-
             button.classList.add('draggable'); 
-
-
 
             const sizeClass = diameterMM === 24 ? 'button-24mm' : 'button-30mm';
 
-
-
             button.classList.add(sizeClass);
 
-
-
             
-
-
-
             button.dataset.physicalDiameterMm = diameterMM;
-
-
 
             button.dataset.label = label || ""; 
 
-
-
             
-
-
 
             const diameterPX = diameterMM * current_PX_PER_MM;
 
-
-
             button.style.width = `${diameterPX}px`;
-
-
 
             button.style.height = `${diameterPX}px`;
 
-
-
             button.style.left = `${(physicalXMm * current_PX_PER_MM) - diameterPX / 2}px`;
 
-
-
             button.style.top = `${(physicalYMm * current_PX_PER_MM) - diameterPX / 2}px`;
-
-
-
-
-
 
 
             button.textContent = label || `${diameterMM}`; 
 
            
             if (color) {
-
-
-
                 button.style.backgroundColor = color;
-
-
-
             } else {
-
-
-
                  button.style.backgroundColor = diameterMM === 24 ? '#4299E1' : '#ED8936';
-
-
-
             }
-
-
 
             addDeleteButtonToElement(button, el => el.remove()); 
 
-
-
             button.addEventListener('click', handleButtonClick);
-
-
 
             return button;
 
-
-
         }
 
-
-
         
-
-
-
         const jlfHoles_rotated = [ 
-
-
-
             { xMM: -20, yMM: 40, diaMM: 4 }, { xMM: -20, yMM: -40, diaMM: 4 },
-
-
-
             { xMM: 20, yMM: 40, diaMM: 4 },  { xMM: 20, yMM: -40, diaMM: 4 }
-
-
-
         ];
-
-
 
         const crownHoles_rotated = [ 
-
-
-
             { xMM: -22, yMM: 42, diaMM: 4 }, { xMM: -22, yMM: -42, diaMM: 4 },
-
-
-
             { xMM: 22, yMM: 42, diaMM: 4 },  { xMM: 22, yMM: -42, diaMM: 4 }
-
-
-
         ];
 
-function updateJoystickPositionFromInputs() {
-  if (!selectedJoystick) return;
+        function updateJoystickPositionFromInputs() {
+            if (!selectedJoystick) return;
 
-  const x = parseFloat(document.getElementById('joystick-pos-x').value);
-  const y = parseFloat(document.getElementById('joystick-pos-y').value);
+            const x = parseFloat(document.getElementById('joystick-pos-x').value);
+            const y = parseFloat(document.getElementById('joystick-pos-y').value);
 
-  if (!isNaN(x) && !isNaN(y)) {
-    selectedJoystick.dataset.physicalXMm = x;
-    selectedJoystick.dataset.physicalYMm = y;
+            if (!isNaN(x) && !isNaN(y)) {
+                selectedJoystick.dataset.physicalXMm = x;
+                selectedJoystick.dataset.physicalYMm = y;
 
-    const px = x * current_PX_PER_MM;
-    const py = y * current_PX_PER_MM;
+                const px = x * current_PX_PER_MM;
+                const py = y * current_PX_PER_MM;
 
-    selectedJoystick.style.left = `${px - selectedJoystick.offsetWidth / 2}px`;
-    selectedJoystick.style.top = `${py - selectedJoystick.offsetHeight / 2}px`;
-  }
-}
-
-
-
-
-
-       function createJoystickPlate(name, pWidthMM, pHeightMM, physicalXMm, physicalYMm, mountingHolesData, isRotated = false) {
-
-    const displayWidthMM = isRotated ? pHeightMM : pWidthMM;
-    const displayHeightMM = isRotated ? pWidthMM : pHeightMM;
-
-    const plate = baseCreateElement({ physicalXMm, physicalYMm });
-
-    plate.classList.add('joystick-plate', 'draggable'); // ✅ Añade clase draggable
-    plate.style.position = 'absolute'; // ✅ Necesario para posicionar en layout-area
-
-    // ✅ Posicionamiento inicial
-    const px = physicalXMm * current_PX_PER_MM;
-    const py = physicalYMm * current_PX_PER_MM;
-    plate.style.left = `${px}px`;
-    plate.style.top = `${py}px`;
-
-    plate.addEventListener('click', handleJoystickClick); // ✅ Asocia el evento para mostrar el panel
-
-    plate.dataset.physicalWidthMm = displayWidthMM;
-    plate.dataset.physicalHeightMm = displayHeightMM;
-    plate.dataset.originalWidthMm = pWidthMM;
-    plate.dataset.originalHeightMm = pHeightMM;
-    plate.dataset.isRotated = isRotated;
-    plate.dataset.name = name;
-    plate.dataset.mountingHoles = JSON.stringify(mountingHolesData);
-
-    const plateWidthPX = displayWidthMM * current_PX_PER_MM;
-    const plateHeightPX = displayHeightMM * current_PX_PER_MM;
-
-    plate.style.width = `${plateWidthPX}px`;
-    plate.style.height = `${plateHeightPX}px`;
-
-    addDeleteButtonToElement(plate, el => el.remove());
-
-    const nameSpan = document.createElement('span');
-    nameSpan.classList.add('plate-name');
-    nameSpan.textContent = name;
-    plate.appendChild(nameSpan);
-
-    const ballTop = document.createElement('div');
-    ballTop.classList.add('joystick-ball-top');
-    const ballDiameterPX = 35 * current_PX_PER_MM;
-    ballTop.style.width = `${ballDiameterPX}px`;
-    ballTop.style.height = `${ballDiameterPX}px`;
-    plate.appendChild(ballTop);
-
-    if (mountingHolesData) {
-        mountingHolesData.forEach(holeData => {
-            const hole = document.createElement('div');
-            hole.classList.add('mounting-hole');
-            const holeDiaPX = (holeData.diaMM || 4) * current_PX_PER_MM;
-            hole.style.width = `${holeDiaPX}px`;
-            hole.style.height = `${holeDiaPX}px`;
-
-            const holeCenterX_px = (plateWidthPX / 2) + (holeData.xMM * current_PX_PER_MM);
-            const holeCenterY_px = (plateHeightPX / 2) + (holeData.yMM * current_PX_PER_MM);
-            hole.style.left = `${holeCenterX_px - (holeDiaPX / 2)}px`;
-            hole.style.top = `${holeCenterY_px - (holeDiaPX / 2)}px`;
-            plate.appendChild(hole);
-        });
-    }
-
-    makeDraggable(plate); //  Habilita movimiento
-function handleJoystickClick(e) {
-  const plate = e.currentTarget;
-
-  selectedJoystick = plate;
-  selectedButtonForEditor =  null;
-
-  // Mostrar el panel de joystick, ocultar el de botones
-document.getElementById('floating-editor-panel').classList.remove('hidden');
-document.getElementById('joystick-editor-container').classList.remove('hidden');
-document.getElementById('button-editor-container').classList.add('hidden');
-document.getElementById('image-controls-container').classList.add('hidden');
-  // Ocultar panel de imagen si está activo
-  deselectImage?.();
-
-  // Cargar valores actuales en el panel
-  document.getElementById('joystick-pos-x').value = parseFloat(plate.dataset.physicalXMm || 0).toFixed(1);
-  document.getElementById('joystick-pos-y').value = parseFloat(plate.dataset.physicalYMm || 0).toFixed(1);
-  document.getElementById('joystick-pos-x').addEventListener('change', updateJoystickPositionFromInputs);
-document.getElementById('joystick-pos-y').addEventListener('change', updateJoystickPositionFromInputs);
-}
-
-    return plate;
-
-
-
-
-
+                selectedJoystick.style.left = `${px - selectedJoystick.offsetWidth / 2}px`;
+                selectedJoystick.style.top = `${py - selectedJoystick.offsetHeight / 2}px`;
+            }
         }
 
 
+        function createJoystickPlate(name, pWidthMM, pHeightMM, physicalXMm, physicalYMm, mountingHolesData, isRotated = false) {
+            const displayWidthMM = isRotated ? pHeightMM : pWidthMM;
+            const displayHeightMM = isRotated ? pWidthMM : pHeightMM;
+
+            const plate = baseCreateElement({ physicalXMm, physicalYMm });
+            plate.classList.add('joystick-plate', 'draggable');
+            plate.style.position = 'absolute';
+
+            const px = physicalXMm * current_PX_PER_MM;
+            const py = physicalYMm * current_PX_PER_MM;
+            plate.style.left = `${px}px`;
+            plate.style.top = `${py}px`;
+
+            plate.addEventListener('click', handleJoystickClick);
+
+            plate.dataset.physicalWidthMm = displayWidthMM;
+            plate.dataset.physicalHeightMm = displayHeightMM;
+            plate.dataset.originalWidthMm = pWidthMM;
+            plate.dataset.originalHeightMm = pHeightMM;
+            plate.dataset.isRotated = isRotated;
+            plate.dataset.name = name;
+            plate.dataset.mountingHoles = JSON.stringify(mountingHolesData);
+
+            const plateWidthPX = displayWidthMM * current_PX_PER_MM;
+            const plateHeightPX = displayHeightMM * current_PX_PER_MM;
+
+            plate.style.width = `${plateWidthPX}px`;
+            plate.style.height = `${plateHeightPX}px`;
+
+            addDeleteButtonToElement(plate, el => el.remove());
+
+            const nameSpan = document.createElement('span');
+            nameSpan.classList.add('plate-name');
+            nameSpan.textContent = name;
+            plate.appendChild(nameSpan);
+
+            const ballTop = document.createElement('div');
+            ballTop.classList.add('joystick-ball-top');
+            const ballDiameterPX = 35 * current_PX_PER_MM;
+            ballTop.style.width = `${ballDiameterPX}px`;
+            ballTop.style.height = `${ballDiameterPX}px`;
+            plate.appendChild(ballTop);
+
+            if (mountingHolesData) {
+                mountingHolesData.forEach(holeData => {
+                    const hole = document.createElement('div');
+                    hole.classList.add('mounting-hole');
+                    const holeDiaPX = (holeData.diaMM || 4) * current_PX_PER_MM;
+                    hole.style.width = `${holeDiaPX}px`;
+                    hole.style.height = `${holeDiaPX}px`;
+
+                    const holeCenterX_px = (plateWidthPX / 2) + (holeData.xMM * current_PX_PER_MM);
+                    const holeCenterY_px = (plateHeightPX / 2) + (holeData.yMM * current_PX_PER_MM);
+                    hole.style.left = `${holeCenterX_px - (holeDiaPX / 2)}px`;
+                    hole.style.top = `${holeCenterY_px - (holeDiaPX / 2)}px`;
+                    plate.appendChild(hole);
+                });
+            }
+
+            makeDraggable(plate);
+            return plate;
+        }
 
         
 
-
-
         // --- Image Manipulation ---
-
-
-
         if(imageLoaderBtn) {
-
-
-
-            imageLoaderBtn.addEventListener('click', () => {
-
-
-
-            });
-
-
-
+            imageLoaderBtn.addEventListener('click', () => {});
         } else {
-
-
-
             console.error("Image loader button not found");
-
-
-
         }
-
-
-
-
-
 
 
         imageLoaderInput.addEventListener('change', (event) => {
-
-
-
             const file = event.target.files[0];
-
-
-
             if (file && file.type.startsWith('image/')) { 
-
-
-
                 const reader = new FileReader();
-
-
-
                 reader.onload = (e) => {
-
-
-
                     const initialPhysicalXMm = 70 / current_PX_PER_MM; 
-
-
-
                     const initialPhysicalYMm = 70 / current_PX_PER_MM;
-
-
-
                     createDraggableImage(e.target.result, initialPhysicalXMm, initialPhysicalYMm);
-
-
-
                 }
-
-
-
                 reader.onerror = (err) => {
-
-
-
                     console.error("FileReader error:", err);
-
-
-
                     alert("Error reading file."); 
-
-
-
                 }
-
-
-
                 reader.readAsDataURL(file);
-
-
-
             } else if (file) {
-
-
-
                 alert("Please select a valid image file."); 
-
-
-
             }
-
-
-
             imageLoaderInput.value = ''; 
-
-
-
         });
-
-
-
-
-
 
 
         function createDraggableImage(src, physicalXMm, physicalYMm) {
-
-
-
             const imgWrapper = baseCreateElement({ physicalXMm, physicalYMm }); 
-
-
             imgWrapper.classList.add('draggable-image-wrapper');
-
             imgWrapper.style.zIndex = "0";
             
-
-            
-
-
-
             const img = document.createElement('img');
-
-
-
             img.src = src;
-
-
-
             img.style.imageRendering = 'pixelated'; 
 
-
-
             img.onload = () => { 
-
-
-
                 const maxDim = 200; 
-
-
-
                 const ratio = Math.min(maxDim / img.naturalWidth, maxDim / img.naturalHeight, 1); 
-
-
-
                 const initialPixelWidth = img.naturalWidth * ratio;
-
-
-
                 const initialPixelHeight = img.naturalHeight * ratio;
 
-
-
-
-
-
-
                 imgWrapper.style.width = `${initialPixelWidth}px`; 
-
-
-
                 imgWrapper.style.height = `${initialPixelHeight}px`;
-
-
-
                 imgWrapper.dataset.naturalWidth = img.naturalWidth;
-
-
-
                 imgWrapper.dataset.naturalHeight = img.naturalHeight;
-
-
-
                 imgWrapper.dataset.scale = ratio; 
-
-
-
                 imgWrapper.dataset.rotate = "0";
-
-
-
                 imgWrapper.dataset.opacity = "1";
-
-
-
                 imgWrapper.dataset.visible = "true";
-
-
-
                 imgWrapper.dataset.locked = "false"; 
-
-
-
                 imgWrapper.dataset.src = src; 
-
-
-
                 updateImageTransform(imgWrapper); 
-
-
-
             }
-
-
-
             img.onerror = () => { 
-
-
-
                 console.error("Error loading image source.");
-
-
-
                 alert("Could not load the image.");
-
-
-
                 imgWrapper.remove(); 
-
-
-
             }
-
-
-
             imgWrapper.appendChild(img);
-
-
-
             
-
-
-
             ['tl', 'tr', 'bl', 'br'].forEach(handlePos => {
-
-
-
                 const handle = document.createElement('div');
-
-
-
                 handle.classList.add('resize-handle', handlePos);
-
-
-
                 handle.dataset.handle = handlePos;
-
-
-
                 handle.addEventListener('mousedown', onResizeStart);
-
-
-
                 imgWrapper.appendChild(handle);
-
-
-
             });
-
-
-
-
-
-
 
             addDeleteButtonToElement(imgWrapper, el => el.remove());
-
-
-
             
-
-
-
             imgWrapper.addEventListener('click', (e) => {
-
-
-
                 if (!e.target.classList.contains('resize-handle')) {
-
-
-
                     e.stopPropagation(); 
-
-
-
                     selectImage(imgWrapper);
-
-
-
                 }
-
-
-
             });
-
-
-
             
-
-
-
             layoutArea.insertBefore(imgWrapper, layoutArea.firstChild);
-
-
-
             selectImage(imgWrapper); 
-
-
-
         }
-
-
 
         
-
-
-
         function selectImage(imageWrapper) {
-
-
-
             if (selectedImageElement && selectedImageElement !== imageWrapper) {
-
-
-
                 selectedImageElement.classList.remove('selected', 'locked'); 
-
-
-
             }
 
-             document.getElementById('floating-editor-panel').classList.remove('hidden');
-             document.getElementById('image-controls-container').classList.remove('hidden');
-             document.getElementById('button-editor-container').classList.add('hidden');
-             document.getElementById('joystick-editor-container').classList.add('hidden');
+            // Unselect other elements
+            hideButtonEditor();
+            hideJoystickEditor();
+
+            document.getElementById('floating-editor-panel').classList.remove('hidden');
+            document.getElementById('image-controls-container').classList.remove('hidden');
+            document.getElementById('button-editor-container').classList.add('hidden');
+            document.getElementById('joystick-editor-container').classList.add('hidden');
 
             selectedImageElement = imageWrapper;
-
-
-
             selectedImageElement.classList.add('selected');
 
-
-
-            imageControlsContainer.classList.remove('hidden');
-
-
-
-            hideButtonEditor(); 
-
-
-
-            
-
-
-
             const isLocked = selectedImageElement.dataset.locked === "true";
-
-
-
             imageScaleInput.value = parseFloat(selectedImageElement.dataset.scale || 1) * 100;
-
-
-
             imageRotateInput.value = selectedImageElement.dataset.rotate || 0;
-
-
-
             imageOpacityInput.value = parseFloat(selectedImageElement.dataset.opacity || 1) * 100;
-
-
-
             imageVisibleCheckbox.checked = selectedImageElement.dataset.visible === "true";
-
-
-
             imageLockCheckbox.checked = isLocked;
 
-
-
-
-
-
-
             imageScaleInput.disabled = isLocked;
-
-
-
             imageRotateInput.disabled = isLocked;
-
-
-
             imageOpacityInput.disabled = isLocked;
-
-
-
             centerImageBtn.disabled = isLocked; 
-
-
-
             
-
-
-
             if (isLocked) {
-
-
-
                 selectedImageElement.classList.add('locked');
-
-
-
             } else {
-
-
-
                 selectedImageElement.classList.remove('locked');
-
-
-
             }
-
-
-
         }
-
-
-
-
-
 
 
         function deselectImage() {
-
-
-
             if (selectedImageElement) {
-
-
-
                 selectedImageElement.classList.remove('selected', 'locked'); 
-document.getElementById('floating-editor-panel').classList.add('hidden');
-
-
             }
-
-
-
             selectedImageElement = null;
-
-
-
             imageControlsContainer.classList.add('hidden');
-
-
-
         }
 
-
-
         
-
-
-
         imageScaleInput.addEventListener('input', () => {
-
-
-
             if (selectedImageElement && selectedImageElement.dataset.locked !== "true") {
-
-
-
                 selectedImageElement.dataset.scale = parseFloat(imageScaleInput.value) / 100;
-
-
-
                 updateImageTransform(selectedImageElement);
-
-
-
             }
-
-
-
         });
-
-
 
         imageRotateInput.addEventListener('input', () => {
-
-
-
             if (selectedImageElement && selectedImageElement.dataset.locked !== "true") {
-
-
-
                 selectedImageElement.dataset.rotate = imageRotateInput.value;
-
-
-
                 updateImageTransform(selectedImageElement);
-
-
-
             }
-
-
-
         });
-
-
 
         imageOpacityInput.addEventListener('input', () => {
-
-
-
             if (selectedImageElement && selectedImageElement.dataset.locked !== "true") {
-
-
-
                 const opacityValue = parseFloat(imageOpacityInput.value) / 100;
-
-
-
                 selectedImageElement.dataset.opacity = opacityValue;
-
-
-
                 selectedImageElement.style.opacity = opacityValue;
-
-
-
             }
-
-
-
         });
-
-
 
         imageVisibleCheckbox.addEventListener('change', () => {
-
-
-
             if (selectedImageElement) {
-
-
-
                 selectedImageElement.dataset.visible = imageVisibleCheckbox.checked;
-
-
-
                 selectedImageElement.style.display = imageVisibleCheckbox.checked ? 'block' : 'none';
-
-
-
             }
-
-
-
         });
-
-
 
          
-
-
-
         imageLockCheckbox.addEventListener('change', () => {
-
-
-
             if (selectedImageElement) {
-
-
-
                 const isLocked = imageLockCheckbox.checked;
-
-
-
                 selectedImageElement.dataset.locked = isLocked;
-
-
-
                 
-
-
-
                 imageScaleInput.disabled = isLocked;
-
-
-
                 imageRotateInput.disabled = isLocked;
-
-
-
                 imageOpacityInput.disabled = isLocked;
-
-
-
                 centerImageBtn.disabled = isLocked; 
-
-
-
                 
-
-
-
                 if (isLocked) {
-
-
-
                     selectedImageElement.classList.add('locked');
-
-
-
                 } else {
-
-
-
                     selectedImageElement.classList.remove('locked');
-
-
-
                 }
-
-
-
                 selectedImageElement.classList.remove('selected');
-
-
-
                 void selectedImageElement.offsetWidth; 
-
-
-
                 selectedImageElement.classList.add('selected');
-
-
-
-
-
-
-
             }
-
-
-
         });
-
-
-
-
-
 
 
         centerImageBtn.addEventListener('click', () => {
-
-
-
              if (selectedImageElement && selectedImageElement.dataset.locked !== "true") {
-
-
-
                  const newPhysicalX = (canvasPhysicalWidthMM - (selectedImageElement.offsetWidth / current_PX_PER_MM)) / 2;
-
-
-
                  const newPhysicalY = (canvasPhysicalHeightMM - (selectedImageElement.offsetHeight / current_PX_PER_MM)) / 2;
 
-
-
-
-
-
-
                  selectedImageElement.dataset.physicalXMm = newPhysicalX;
-
-
-
                  selectedImageElement.dataset.physicalYMm = newPhysicalY;
-
-
-
                  
-
-
-
                  selectedImageElement.style.left = `${newPhysicalX * current_PX_PER_MM}px`;
-
-
-
                  selectedImageElement.style.top = `${newPhysicalY * current_PX_PER_MM}px`;
-
-
-
              }
-
-
-
         });
-
-
-
-
-
 
 
         deleteImageBtn.addEventListener('click', () => {
-
-
-
             if (selectedImageElement) {
-
-
-
                 selectedImageElement.remove();
-
-
-
                 deselectImage();
-
-
-
             }
-
-
-
         });
-
-
-
-
-
 
 
         function updateImageTransform(imageWrapper) {
-
-
-
             const scale = parseFloat(imageWrapper.dataset.scale || 1);
-
-
-
             const rotate = imageWrapper.dataset.rotate || 0;
-
-
-
             imageWrapper.style.transform = `rotate(${rotate}deg)`; 
-
-
-
             if (imageWrapper.dataset.naturalWidth) {
-
-
-
                  imageWrapper.style.width = `${parseFloat(imageWrapper.dataset.naturalWidth) * scale}px`;
-
-
-
                  imageWrapper.style.height = `${parseFloat(imageWrapper.dataset.naturalHeight) * scale}px`;
-
-
-
             }
-
-
-
              imageWrapper.style.opacity = imageWrapper.dataset.opacity || 1; 
-
-
-
         }
-
-
-
-
-
 
 
         // --- Resize Logic ---
-
-
-
         function onResizeStart(e) {
-
-
-
             if (!selectedImageElement || selectedImageElement.dataset.locked === "true") return;
-
-
-
             
-
-
-
             e.preventDefault();
-
-
-
             e.stopPropagation(); 
 
-
-
-
-
-
-
             isResizing = true;
-
-
-
             resizeHandle = e.target;
-
-
-
             
-
-
-
             startX = e.clientX;
-
-
-
             startY = e.clientY;
-
-
-
             initialWidth = selectedImageElement.offsetWidth;
-
-
-
             initialHeight = selectedImageElement.offsetHeight;
-
-
-
             initialLeft = selectedImageElement.offsetLeft;
-
-
-
             initialTop = selectedImageElement.offsetTop;
-
-
-
             initialRatio = parseFloat(selectedImageElement.dataset.naturalWidth) / parseFloat(selectedImageElement.dataset.naturalHeight);
 
-
-
-
-
-
-
             document.addEventListener('mousemove', onResizeMove);
-
-
-
             document.addEventListener('mouseup', onResizeEnd);
-
-
-
         }
-
-
-
-
-
 
 
        function onResizeMove(e) {
-
-
-
             if (!isResizing || !selectedImageElement) return;
 
-
-
-
-
-
-
             const dx = e.clientX - startX;
-
-
-
             const dy = e.clientY - startY;
-
-
-
             let newWidth = initialWidth;
-
-
-
             let newHeight = initialHeight;
-
-
-
             let newLeft = initialLeft;
-
-
-
             let newTop = initialTop;
-
-
-
-
-
-
 
             const handleType = resizeHandle.dataset.handle;
 
-
-
-
-
-
-
             if (handleType.includes('r')) { newWidth = initialWidth + dx; }
-
-
-
             if (handleType.includes('l')) { newWidth = initialWidth - dx; }
-
-
-
             if (handleType.includes('b')) { newHeight = initialHeight + dy; }
-
-
-
             if (handleType.includes('t')) { newHeight = initialHeight - dy; }
-
-
-
             
-
-
-
             // Maintain aspect ratio
-
-
-
             if (handleType.includes('l') || handleType.includes('r')) {
-
-
-
                 newHeight = newWidth / initialRatio;
-
-
-
             } else if (handleType.includes('t') || handleType.includes('b')) {
-
-
-
                 newWidth = newHeight * initialRatio;
-
-
-
             }
-
-
-
-
-
-
-
-
-
-
 
             if (newWidth < 20 || newHeight < 20) return;
 
-
-
-
-
-
-
             if (handleType.includes('l')) { newLeft = initialLeft + (initialWidth - newWidth); }
-
-
-
             if (handleType.includes('t')) { newTop = initialTop + (initialHeight - newHeight); }
 
-
-
-
-
-
-
             // Boundary checks
-
-
-
             newLeft = Math.max(0, Math.min(newLeft, layoutArea.offsetWidth - newWidth));
-
-
-
             newTop = Math.max(0, Math.min(newTop, layoutArea.offsetHeight - newHeight));
-
-
-
              // Re-check width/height if position adjustment capped them
-
-
-
             if (newLeft + newWidth > layoutArea.offsetWidth) newWidth = layoutArea.offsetWidth - newLeft;
-
-
-
             if (newTop + newHeight > layoutArea.offsetHeight) newHeight = layoutArea.offsetHeight - newTop;
-
-
-
              // Maintain aspect ratio again after boundary checks
-
-
-
             if (handleType.includes('l') || handleType.includes('r')) newHeight = newWidth / initialRatio;
-
-
-
             else newWidth = newHeight * initialRatio;
 
 
-
-
-
-
-
-
-
-
-
             selectedImageElement.style.width = `${newWidth}px`;
-
-
-
             selectedImageElement.style.height = `${newHeight}px`;
-
-
-
             selectedImageElement.style.left = `${newLeft}px`;
-
-
-
             selectedImageElement.style.top = `${newTop}px`;
 
-
-
-
-
-
-
             const currentScale = newWidth / parseFloat(selectedImageElement.dataset.naturalWidth);
-
-
-
             selectedImageElement.dataset.scale = currentScale;
-
-
-
             imageScaleInput.value = Math.round(currentScale * 100);
-
-
-
             // Update physical position after resize
-
-
-
-            selectedImageElement.dataset.physicalXMm = newLeft / current_PX_PER_MM;
-
-
-
-            selectedImageElement.dataset.physicalYMm = newTop / current_PX_PER_MM;
-
-
-
+            updateElementPhysicalPosition(selectedImageElement);
         }
-
-
-
-
-
 
 
         function onResizeEnd() {
-
-
-
             if (isResizing) {
-
-
-
                 isResizing = false;
-
-
-
                 resizeHandle = null;
-
-
-
                 document.removeEventListener('mousemove', onResizeMove);
-
-
-
                 document.removeEventListener('mouseup', onResizeEnd);
-
-
-
             }
-
-
-
         }
-
-
-
         // --- End Resize Logic ---
 
-
-
-
-
-
-
-        // --- Button Editor Logic ---
-
-
-
+        // --- Editors Logic ---
         function handleButtonClick(e) {
+            const button = e.currentTarget;
+            if (draggedItem || !button.classList.contains('draggable') || button.classList.contains('joystick-plate')) return;
 
+            // Unselect other elements
+            deselectImage();
+            hideJoystickEditor();
 
+            selectedButtonForEditor = button;
+            
+            document.getElementById('floating-editor-panel').classList.remove('hidden');
+            document.getElementById('button-editor-container').classList.remove('hidden');
+            document.getElementById('joystick-editor-container').classList.add('hidden');
+            document.getElementById('image-controls-container').classList.add('hidden');
 
-            if (!draggedItem && e.target.classList.contains('draggable') && !e.target.classList.contains('joystick-plate') && !e.target.classList.contains('draggable-image-wrapper')) {
+            const inputPosX = document.getElementById('button-pos-x');
+            const inputPosY = document.getElementById('button-pos-y');
 
-
-
-                selectedButtonForEditor = e.target;
-				
-document.getElementById('floating-editor-panel').classList.remove('hidden');
-document.getElementById('button-editor-container').classList.remove('hidden');
-document.getElementById('joystick-editor-container').classList.add('hidden');
-document.getElementById('image-controls-container').classList.add('hidden');
-
-const inputPosX = document.getElementById('button-pos-x');
-const inputPosY = document.getElementById('button-pos-y');
-
-function updateButtonPositionFromInputs() {
-  if (!selectedButtonForEditor) return;
-
-  const x = parseFloat(inputPosX.value);
-  const y = parseFloat(inputPosY.value);
-  const isJoystick = selectedButtonForEditor.classList.contains('joystick-plate');
-  const diameter = parseFloat(selectedButtonForEditor.dataset.physicalDiameterMm || 30);
-
-  if (!isNaN(x) && !isNaN(y)) {
-    selectedButtonForEditor.dataset.physicalXMm = x;
-    selectedButtonForEditor.dataset.physicalYMm = y;
-
-    const px = x * current_PX_PER_MM;
-    const py = y * current_PX_PER_MM;
-
-    selectedButtonForEditor.style.left = `${px - (diameter * current_PX_PER_MM) / 2}px`;
-    selectedButtonForEditor.style.top = `${py - (diameter * current_PX_PER_MM) / 2}px`;
-  }
-}
-
-inputPosX.addEventListener('change', updateButtonPositionFromInputs);
-inputPosY.addEventListener('change', updateButtonPositionFromInputs);
-                
-inputPosX.value = parseFloat(selectedButtonForEditor.dataset.physicalXMm || 0).toFixed(1);
-inputPosY.value = parseFloat(selectedButtonForEditor.dataset.physicalYMm || 0).toFixed(1);
-
-
-                buttonLabelInput.value = selectedButtonForEditor.dataset.label || "";
-
-
-
-                const currentColor = selectedButtonForEditor.style.backgroundColor;
-
-
-
-                if (currentColor.startsWith('rgb')) {
-
-
-
-                    const rgb = currentColor.match(/\d+/g).map(Number);
-
-
-
-                    buttonColorInputEditor.value = `#${rgb[0].toString(16).padStart(2, '0')}${rgb[1].toString(16).padStart(2, '0')}${rgb[2].toString(16).padStart(2, '0')}`;
-
-
-
-                } else {
-
-
-
-                     buttonColorInputEditor.value = currentColor;
-
-
-
+            function updateButtonPositionFromInputs() {
+                if (!selectedButtonForEditor) return;
+                const x = parseFloat(inputPosX.value);
+                const y = parseFloat(inputPosY.value);
+                const diameter = parseFloat(selectedButtonForEditor.dataset.physicalDiameterMm || 30);
+                if (!isNaN(x) && !isNaN(y)) {
+                    selectedButtonForEditor.dataset.physicalXMm = x;
+                    selectedButtonForEditor.dataset.physicalYMm = y;
+                    const px = x * current_PX_PER_MM;
+                    const py = y * current_PX_PER_MM;
+                    selectedButtonForEditor.style.left = `${px - (diameter * current_PX_PER_MM) / 2}px`;
+                    selectedButtonForEditor.style.top = `${py - (diameter * current_PX_PER_MM) / 2}px`;
                 }
-
-
-
-                buttonEditorContainer.classList.remove('hidden');
-
-
-
-                deselectImage(); 
-
-
-
             }
 
+            inputPosX.addEventListener('change', updateButtonPositionFromInputs);
+            inputPosY.addEventListener('change', updateButtonPositionFromInputs);
+            
+            inputPosX.value = parseFloat(selectedButtonForEditor.dataset.physicalXMm || 0).toFixed(1);
+            inputPosY.value = parseFloat(selectedButtonForEditor.dataset.physicalYMm || 0).toFixed(1);
 
-
+            buttonLabelInput.value = selectedButtonForEditor.dataset.label || "";
+            const currentColor = selectedButtonForEditor.style.backgroundColor;
+            if (currentColor.startsWith('rgb')) {
+                const rgb = currentColor.match(/\d+/g).map(Number);
+                buttonColorInputEditor.value = `#${rgb[0].toString(16).padStart(2, '0')}${rgb[1].toString(16).padStart(2, '0')}${rgb[2].toString(16).padStart(2, '0')}`;
+            } else {
+                 buttonColorInputEditor.value = currentColor;
+            }
         }
-
-
-
         
-
-
-
         buttonColorInputEditor.addEventListener('input', (e) => {
-
-
-
             if (selectedButtonForEditor) {
-
-
-
                 selectedButtonForEditor.style.backgroundColor = e.target.value;
-
-
-
             }
-
-
-
         });
-
-
-
-
-
-
 
         buttonLabelInput.addEventListener('input', (e) => {
-
-
-
             if (selectedButtonForEditor) {
-
-
-
                 const newLabel = e.target.value.trim();
-
-
-
                 selectedButtonForEditor.dataset.label = newLabel;
-
-
-
                 selectedButtonForEditor.textContent = newLabel || selectedButtonForEditor.dataset.physicalDiameterMm;
-
-
-
             }
-
-
-
         });
 
+        function handleJoystickClick(e) {
+            const plate = e.currentTarget;
 
+            // Unselect other elements
+            deselectImage();
+            hideButtonEditor();
 
+            selectedJoystick = plate;
 
-function handleJoystickClick(e) {
-  const plate = e.currentTarget;
-  selectedButtonForEditor = null;
+            document.getElementById('floating-editor-panel').classList.remove('hidden');
+            document.getElementById('joystick-editor-container').classList.remove('hidden');
+            document.getElementById('button-editor-container').classList.add('hidden');
+            document.getElementById('image-controls-container').classList.add('hidden');
 
-}
-
+            document.getElementById('joystick-pos-x').value = parseFloat(plate.dataset.physicalXMm || 0).toFixed(1);
+            document.getElementById('joystick-pos-y').value = parseFloat(plate.dataset.physicalYMm || 0).toFixed(1);
+            document.getElementById('joystick-pos-x').addEventListener('change', updateJoystickPositionFromInputs);
+            document.getElementById('joystick-pos-y').addEventListener('change', updateJoystickPositionFromInputs);
+        }
 
         function hideButtonEditor() {
-
-
-
             buttonEditorContainer.classList.add('hidden');
-
-
-
             selectedButtonForEditor = null;
-
-
-
         }
-        // --- End Button Editor Logic ---
 
-
-
-
-
-
-
-        
-
+        function hideJoystickEditor() {
+            document.getElementById('joystick-editor-container').classList.add('hidden');
+            selectedJoystick = null;
+        }
+        // --- End Editors Logic ---
 
 
         document.addEventListener('click', function(event) {
+            const floatingPanel = document.getElementById('floating-editor-panel');
+            const isClickInsideLayout = layoutArea.contains(event.target);
+            const isClickInsidePanel = floatingPanel.contains(event.target);
+            const isClickOnElement = event.target.closest('.draggable, .joystick-plate, .draggable-image-wrapper');
 
-
-
-            const isLayoutAreaClick = layoutArea.contains(event.target);
-
-
-
-            const isControlsClick = controlsPanel.contains(event.target);
-
-
-
-            const isResizeHandleClick = event.target.classList.contains('resize-handle');
-
-
-            if (selectedButtonForEditor && !buttonEditorContainer.contains(event.target) && event.target !== selectedButtonForEditor && !selectedButtonForEditor.contains(event.target)) {
-
-
-
-                hideButtonEditor();
-
-
-
-            }
-
-
-
-            if (selectedImageElement && !imageControlsContainer.contains(event.target) && event.target !== selectedImageElement && !selectedImageElement.contains(event.target) && !isResizeHandleClick) {
-
-
-
-                 if (!isLayoutAreaClick || (isLayoutAreaClick && event.target === layoutArea)) { 
-
-
-
-                    deselectImage();
-
-
-
-                 }
-
-
-
-            }
-
-
-
-            if (event.target === layoutArea) {
-
-document.getElementById('floating-editor-panel').classList.remove('hidden');
-document.getElementById('image-controls-container').classList.remove('hidden');
-document.getElementById('button-editor-container').classList.add('hidden');
-document.getElementById('joystick-editor-container').classList.add('hidden');
-
-                hideButtonEditor();
-
-
-
+            if (!isClickInsidePanel && !isClickOnElement) {
                 deselectImage();
-
-
-
+                hideButtonEditor();
+                hideJoystickEditor();
+                if (event.target !== layoutArea) { // Don't hide panel if clicking on empty space in layout area
+                     floatingPanel.classList.add('hidden');
+                }
             }
-
-
-
         });
 
 
 
-
-
-
-
-
-
-
-
-        
-function elementsCollide(el1, el2) {
-    const r1 = el1.getBoundingClientRect();
-    const r2 = el2.getBoundingClientRect();
-    return !(r1.right < r2.left ||
-             r1.left > r2.right ||
-             r1.bottom < r2.top ||
-             r1.top > r2.bottom);
-}
-
-function isOverlappingAny(element) {
-  const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
-    return el !== element && !el.classList.contains('draggable-image-wrapper');
-  });
-  return others.some(el => elementsCollide(element, el));
-}
-
-
-function getCenter(el) {
-    const rect = el.getBoundingClientRect();
-    return {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-        r: rect.width / 2
-    };
-}
-
-function isCircleOverlap(el1, el2) {
-    const a = getCenter(el1);
-    const b = getCenter(el2);
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    return distance < a.r + b.r + 1;
-}
-
-function pushAwayFrom(el1, el2) {
-    const a = getCenter(el1);
-    const b = getCenter(el2);
-    let dx = a.x - b.x;
-    let dy = a.y - b.y;
-    let distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance === 0) {
-        dx = 1;
-        dy = 0;
-        distance = 1;
-    }
-
-    const overlap = a.r + b.r + 1 - distance;
-    const moveX = (dx / distance) * overlap;
-    const moveY = (dy / distance) * overlap;
-
-    const currentLeft = parseFloat(el1.style.left || 0);
-    const currentTop = parseFloat(el1.style.top || 0);
-
-    el1.style.left = `${currentLeft + moveX}px`;
-    el1.style.top = `${currentTop + moveY}px`;
-}
-
-function resolveCollisions(element) {
-  const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
-    return el !== element && !el.classList.contains('draggable-image-wrapper');
-  });
-
-  others.forEach(other => {
-    if (isCircleOverlap(element, other)) {
-      pushAwayFrom(element, other);
-    }
-  });
-}
-
-
-
-function makeDraggable(element) {
-
-
-
-            element.addEventListener('mousedown', (e) => {
-
-document.addEventListener('mouseup', (e) => {
-  if (draggedItem) {
-    draggedItem.classList.remove('dragging');
-
-    if (!draggedItem.classList.contains('draggable-image-wrapper')) {
-      resolveCollisions(draggedItem);
-    }
-
-    draggedItem = null;
-  }
-});
-
-
-                if (element.classList.contains('draggable-image-wrapper') && element.dataset.locked === "true") {
-
-
-
-                    return;
-
-
-
-                }
-
-
-
-                if (e.target.classList.contains('resize-handle')) {
-
-
-
-                    return;
-
-
-
-                }
-
-
-
-
-
-
-
-                if (e.button !== 0 || e.target.classList.contains('delete-btn') || e.target.closest('.delete-btn')) return;
-
-
-
-                
-
-
-
-                if (selectedImageElement && element !== selectedImageElement) {
-
-
-
-                    deselectImage();
-
-
-
-                }
-
-
-
-                if (selectedButtonForEditor && element !== selectedButtonForEditor) { 
-
-
-
-                    hideButtonEditor();
-
-
-
-                }
-
-
-
-
-
-
-
-
-
-
-
-                draggedItem = element;
-
-
-
-                draggedItem.classList.add('dragging');
-
-
-
-                offsetXDragging = e.clientX - draggedItem.getBoundingClientRect().left;
-
-
-                document.addEventListener('mouseup', (e) => {
-    if (draggedItem) {
-        draggedItem.classList.remove('dragging');
-        resolveCollisions(draggedItem);
-        draggedItem = null;
-    }
-});
-                offsetYDragging = e.clientY - draggedItem.getBoundingClientRect().top;
-                var startLeft = draggedItem.style.left;
-                var startTop = draggedItem.style.top;
-
-                document.addEventListener('mouseup', (e) => {
-                    if (draggedItem) {
-                        draggedItem.classList.remove('dragging');
-                        if (isOverlappingAny(draggedItem)) {
-                            draggedItem.style.left = `${startLeft}px`;
-                            draggedItem.style.top = `${startTop}px`;
-                        }
-                        draggedItem = null;
-                    }
-                });
-
-
-
-
-                document.addEventListener('mousemove', onMouseMove);
-
-
-
-                document.addEventListener('mouseup', onMouseUp);
-
-
-
-            });
-
-
-
+        function elementsCollide(el1, el2) {
+            const r1 = el1.getBoundingClientRect();
+            const r2 = el2.getBoundingClientRect();
+            return !(r1.right < r2.left ||
+                    r1.left > r2.right ||
+                    r1.bottom < r2.top ||
+                    r1.top > r2.bottom);
+        }
+
+        function isOverlappingAny(element) {
+        const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
+            return el !== element && !el.classList.contains('draggable-image-wrapper');
+        });
+        return others.some(el => elementsCollide(element, el));
         }
 
 
+        function getCenter(el) {
+            const rect = el.getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2,
+                r: rect.width / 2
+            };
+        }
+
+        function isCircleOverlap(el1, el2) {
+            const a = getCenter(el1);
+            const b = getCenter(el2);
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < a.r + b.r + 1;
+        }
+
+        function pushAwayFrom(el1, el2) {
+            const a = getCenter(el1);
+            const b = getCenter(el2);
+            let dx = a.x - b.x;
+            let dy = a.y - b.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance === 0) {
+                dx = 1;
+                dy = 0;
+                distance = 1;
+            }
+
+            const overlap = a.r + b.r + 1 - distance;
+            const moveX = (dx / distance) * overlap;
+            const moveY = (dy / distance) * overlap;
+
+            const currentLeft = parseFloat(el1.style.left || 0);
+            const currentTop = parseFloat(el1.style.top || 0);
+
+            el1.style.left = `${currentLeft + moveX}px`;
+            el1.style.top = `${currentTop + moveY}px`;
+        }
+
+        function resolveCollisions(element) {
+        const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
+            return el !== element && !el.classList.contains('draggable-image-wrapper');
+        });
+
+        others.forEach(other => {
+            if (isCircleOverlap(element, other)) {
+            pushAwayFrom(element, other);
+            }
+        });
+        }
 
 
+        function makeDraggable(element) {
+            element.addEventListener('mousedown', (e) => {
+                if ((element.classList.contains('draggable-image-wrapper') && element.dataset.locked === "true") || e.target.classList.contains('resize-handle')) {
+                    return;
+                }
 
+                if (e.button !== 0 || e.target.classList.contains('delete-btn') || e.target.closest('.delete-btn')) return;
+                
+                // Clicking an element should select it
+                if (element.classList.contains('draggable-image-wrapper')) selectImage(element);
+                else if (element.classList.contains('joystick-plate')) handleJoystickClick({currentTarget: element});
+                else if (element.classList.contains('draggable')) handleButtonClick({currentTarget: element});
+
+                draggedItem = element;
+                draggedItem.classList.add('dragging');
+                offsetXDragging = e.clientX - draggedItem.getBoundingClientRect().left;
+                offsetYDragging = e.clientY - draggedItem.getBoundingClientRect().top;
+                
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+        }
+
+        function updateElementPhysicalPosition(element) {
+            if (!element) return;
+            const newX = parseFloat(element.style.left);
+            const newY = parseFloat(element.style.top);
+            
+            if (isNaN(newX) || isNaN(newY)) return;
+
+            const itemWidth = element.offsetWidth;
+            const itemHeight = element.offsetHeight;
+
+            if (element.classList.contains('draggable-image-wrapper') || element.classList.contains('joystick-plate')) {
+                element.dataset.physicalXMm = newX / current_PX_PER_MM;
+                element.dataset.physicalYMm = newY / current_PX_PER_MM;
+            } else if (element.classList.contains('draggable')) { // Botones
+                element.dataset.physicalXMm = (newX + itemWidth / 2) / current_PX_PER_MM;
+                element.dataset.physicalYMm = (newY + itemHeight / 2) / current_PX_PER_MM;
+            }
+        }
 
 
         function onMouseMove(e) {
-
-
-
             if (!draggedItem || isResizing) return; 
-
-
-
              if (draggedItem.classList.contains('draggable-image-wrapper') && draggedItem.dataset.locked === "true") {
-
-
-
                  onMouseUp(); 
-
-
-
                  return;
-
-
-
             }
-
-
-
-
-
-
 
             e.preventDefault();
 
-
-
             const layoutRect = layoutArea.getBoundingClientRect();
-
-
-
             let newX = e.clientX - layoutRect.left - offsetXDragging;
-
-
-
             let newY = e.clientY - layoutRect.top - offsetYDragging;
-
-
+            
+            // --- INICIO MEJORA 1: LÓGICA DE AJUSTE A REJILLA ---
+            if (snapToGridCheckbox.checked) {
+                newX = Math.round(newX / GRID_SIZE_PX) * GRID_SIZE_PX;
+                newY = Math.round(newY / GRID_SIZE_PX) * GRID_SIZE_PX;
+            }
+            // --- FIN MEJORA 1 ---
 
             const itemWidth = draggedItem.offsetWidth;
-
-
-
             const itemHeight = draggedItem.offsetHeight;
 
-
-
             newX = Math.max(0, Math.min(newX, layoutRect.width - itemWidth));
-
-
-
             newY = Math.max(0, Math.min(newY, layoutRect.height - itemHeight));
 
-
-
             draggedItem.style.left = `${newX}px`;
-
-
-
             draggedItem.style.top = `${newY}px`;
 
-
-
-
-
-
-
-            // Update physical position in dataset after drag
-
-
-
-            draggedItem.dataset.physicalXMm = newX / current_PX_PER_MM;
-
-
-
-            draggedItem.dataset.physicalYMm = newY / current_PX_PER_MM;
-
-
-
-            // For buttons, physicalX/Y is center, so adjust
-
-
-
-            if (draggedItem.classList.contains('draggable') && !draggedItem.classList.contains('draggable-image-wrapper') && !draggedItem.classList.contains('joystick-plate')) {
-
-
-
-                 draggedItem.dataset.physicalXMm = (newX + itemWidth / 2) / current_PX_PER_MM;
-
-
-
-                 draggedItem.dataset.physicalYMm = (newY + itemHeight / 2) / current_PX_PER_MM;
-
-
-
-            }
-
-
-
-
-
-
-
-
-
-
-
+            updateElementPhysicalPosition(draggedItem);
         }
-
-
-
-
-
 
 
         function onMouseUp() {
-
-
-
             if (isResizing) return; 
-
-
-
             if (draggedItem) {
-
-
-
+                resolveCollisions(draggedItem);
+                updateElementPhysicalPosition(draggedItem); // Final update after potential collision push
                 draggedItem.classList.remove('dragging');
-
-
-
             }
-
-
-
             draggedItem = null;
-
-
-
             document.removeEventListener('mousemove', onMouseMove);
-
-
-
             document.removeEventListener('mouseup', onMouseUp);
-
-
-
         }
-
-
 
         
-
-
-
         // --- Canvas Settings Logic ---
-
-
-
         function applyCanvasSettings() {
-
-
-
             const newWidthMM = parseFloat(canvasWidthInput.value);
-
-
-
             const newHeightMM = parseFloat(canvasHeightInput.value);
-
-
-
             const newPixelsPerCm = parseFloat(pixelDensityInput.value);
 
-
-
-
-
-
-
             if (isNaN(newWidthMM) || isNaN(newHeightMM) || isNaN(newPixelsPerCm) || newWidthMM <=0 || newHeightMM <=0 || newPixelsPerCm <=0) {
-
-
-
                 alert("Por favor, introduce valores válidos para las dimensiones y densidad.");
-
-
-
                 return;
-
-
-
             }
 
-
-
-
-
-
-
             canvasPhysicalWidthMM = newWidthMM;
-
-
-
             canvasPhysicalHeightMM = newHeightMM;
-
-
-
             current_PX_PER_MM = newPixelsPerCm / 10;
 
-
-
-
-
-
-
             layoutArea.style.width = `${canvasPhysicalWidthMM * current_PX_PER_MM}px`;
-
-
-
             layoutArea.style.height = `${canvasPhysicalHeightMM * current_PX_PER_MM}px`;
 
-
-
-
-
-
-
             updateScaleInfoText();
-
-
-
             
-
-
-
             // Update all elements
-
-
-
             Array.from(layoutArea.children).forEach(el => {
-
-
-
                 if (el.classList.contains('draggable') && !el.classList.contains('draggable-image-wrapper') && !el.classList.contains('joystick-plate')) { // Button
-
-
-
                     const physicalX = parseFloat(el.dataset.physicalXMm);
-
-
-
                     const physicalY = parseFloat(el.dataset.physicalYMm);
-
-
-
                     const diameter = parseFloat(el.dataset.physicalDiameterMm);
-
-
-
                     const diameterPX = diameter * current_PX_PER_MM;
-
-
-
                     el.style.width = `${diameterPX}px`;
-
-
-
                     el.style.height = `${diameterPX}px`;
-
-
-
                     el.style.left = `${(physicalX * current_PX_PER_MM) - diameterPX / 2}px`;
-
-
-
                     el.style.top = `${(physicalY * current_PX_PER_MM) - diameterPX / 2}px`;
-
-
-
                 } else if (el.classList.contains('joystick-plate')) {
-
-
-
                     const physicalX = parseFloat(el.dataset.physicalXMm);
-
-
-
                     const physicalY = parseFloat(el.dataset.physicalYMm);
-
-
-
                     const pWidth = parseFloat(el.dataset.physicalWidthMm);
-
-
-
                     const pHeight = parseFloat(el.dataset.physicalHeightMm);
-
-
-
                     const plateWidthPX = pWidth * current_PX_PER_MM;
-
-
-
                     const plateHeightPX = pHeight * current_PX_PER_MM;
 
-
-
-
-
-
-
                     el.style.left = `${physicalX * current_PX_PER_MM}px`;
-
-
-
                     el.style.top = `${physicalY * current_PX_PER_MM}px`;
-
-
-
                     el.style.width = `${plateWidthPX}px`;
-
-
-
                     el.style.height = `${plateHeightPX}px`;
-
-
-
                     
-
-
-
                     // Update ball
-
-
-
                     const ball = el.querySelector('.joystick-ball-top');
-
-
-
                     if (ball) {
-
-
-
                         const ballDiameterPX = 35 * current_PX_PER_MM;
-
-
-
                         ball.style.width = `${ballDiameterPX}px`;
-
-
-
                         ball.style.height = `${ballDiameterPX}px`;
-
-
-
                     }
-
-
-
                     // Update mounting holes
-
-
-
                     const holesData = JSON.parse(el.dataset.mountingHoles || "[]");
-
-
-
                     const existingHoles = el.querySelectorAll('.mounting-hole');
-
-
-
                     existingHoles.forEach(h => h.remove()); // Clear old holes
 
-
-
-
-
-
-
                     holesData.forEach(holeData => {
-
-
-
                         const hole = document.createElement('div');
-
-
-
                         hole.classList.add('mounting-hole');
-
-
-
                         const holeDiaPX = (holeData.diaMM || 4) * current_PX_PER_MM;
-
-
-
                         hole.style.width = `${holeDiaPX}px`;
-
-
-
                         hole.style.height = `${holeDiaPX}px`;
-
-
-
                         const holeCenterX_px = (plateWidthPX / 2) + (holeData.xMM * current_PX_PER_MM);
-
-
-
                         const holeCenterY_px = (plateHeightPX / 2) + (holeData.yMM * current_PX_PER_MM);
-
-
-
                         hole.style.left = `${holeCenterX_px - (holeDiaPX / 2)}px`;
-
-
-
                         hole.style.top = `${holeCenterY_px - (holeDiaPX / 2)}px`;
-
-
-
                         el.appendChild(hole);
-
-
-
                     });
 
-
-
-
-
-
-
                 } else if (el.classList.contains('draggable-image-wrapper')) {
-
-
-
                     const physicalX = parseFloat(el.dataset.physicalXMm);
-
-
-
                     const physicalY = parseFloat(el.dataset.physicalYMm);
-
-
-
                     el.style.left = `${physicalX * current_PX_PER_MM}px`;
-
-
-
                     el.style.top = `${physicalY * current_PX_PER_MM}px`;
-
-
-
                     updateImageTransform(el); 
-
-
-
                 }
-
-
-
             });
-
-
-
         }
 
-
-
-
-
-
-
         applyCanvasSettingsBtn.addEventListener('click', applyCanvasSettings);
-
-
-
         // --- End Canvas Settings Logic ---
 
 
-
-
-
-
-
-
-
-
-
         document.getElementById('add-24mm').addEventListener('click', () => {
-
-
-
-            const btn = createButton(24, 70 / current_PX_PER_MM, 70 / current_PX_PER_MM); // Initial physical pos in mm
-
-
-
+            const btn = createButton(24, 70 / current_PX_PER_MM, 70 / current_PX_PER_MM);
             layoutArea.appendChild(btn);
-
-
-
         });
-
-
 
         document.getElementById('add-30mm').addEventListener('click', () => {
-
-
-
             const btn = createButton(30, 120 / current_PX_PER_MM, 70 / current_PX_PER_MM);
-
-
-
             layoutArea.appendChild(btn);
-
-
-
         });
-
-
-
         
-
-
-
         document.getElementById('add-jlf').addEventListener('click', () => {
-
-
-
             const plate = createJoystickPlate('Sanwa JLF', 95.4, 53.4, 150 / current_PX_PER_MM, 150 / current_PX_PER_MM, jlfHoles_rotated, true);
-
-
-
             layoutArea.appendChild(plate);
-
-
-
         });
-
-
 
         document.getElementById('add-crown309').addEventListener('click', () => {
-
-
-
             const plate = createJoystickPlate('Crown 309', 97, 65, 180 / current_PX_PER_MM, 150 / current_PX_PER_MM, crownHoles_rotated, true);
-
-
-
             layoutArea.appendChild(plate);
-
-
-
         });
-
-
-
         
-
-
-
         document.getElementById('clear-layout').addEventListener('click', () => {
-
-
-
             if (confirm(translations[currentLang].confirmClear)) {
-
-
-
                 layoutArea.innerHTML = ''; 
-
-
-
-                // layoutElements array is removed, direct children iteration is used
-
-
-
                 hideButtonEditor();
-
-
-
                 deselectImage();
-
-
-
+                hideJoystickEditor();
             }
-
-
-
         });
-
-
-
-
-
 
 
         document.getElementById('print-layout').addEventListener('click', () => {
-
-
-
             const printOutlinesOnly = document.getElementById('print-outlines-only').checked;
-
-
-
             if (printOutlinesOnly) {
-
-
-
                 layoutArea.classList.add('print-outlines');
-
-
-
             }
-
-
-
             // Set @page size dynamically for printing
-
-
-
             printStyleBlock.innerHTML = `@page { size: ${canvasPhysicalWidthMM}mm ${canvasPhysicalHeightMM}mm; margin: 0; }`;
-
-
-
-
-
-
 
             window.print();
 
-
-
              setTimeout(() => { 
-
-
-
                 if (printOutlinesOnly) {
-
-
-
                     layoutArea.classList.remove('print-outlines');
-
-
-
                 }
-
-
-
                 printStyleBlock.innerHTML = ""; // Clear dynamic style
-
-
-
             }, 1000); 
-
-
-
         });
-
-
-
         
-
-
-
        const basePresets = {
-
-
-
             leverless_12: { 
-
-
-
                 name: { es: "Leverless 12", en: "Leverless 12", it: "Leverless 12", fr: "Leverless 12", de: "Leverless 12" },
-
-
-
                 buttons: [
-
-
-
                     { d: 24, x: 121.74, y: 119.24 }, { d: 24, x: 234.19, y: 136.69 }, { d: 24, x: 209.69, y: 150.19 },
-
-
-
                     { d: 24, x: 289.19, y: 115.69 }, { d: 24, x: 262.23, y: 108.19 }, { d: 24, x: 234.19, y: 108.19 },
-
-
-
                     { d: 24, x: 210.19, y: 122.19 }, { d: 24, x: 174.19, y: 132.69 }, { d: 24, x: 149.69, y: 119.19 },
-
-
-
                     { d: 24, x: 289.19, y: 143.19 }, { d: 24, x: 262.19, y: 136.69 }, { d: 30, x: 188.68, y: 183.68 }
-
-
-
                 ]
-
-
-
             },
-
-
-
             leverless_16: { 
-
-
-
                 name: {es: "Leverless 16", en: "Leverless 16", it: "Leverless 16", fr: "Leverless 16", de: "Leverless 16"},
-
-
-
                  buttons: [ 
-
-
-
                     { d: 24, x: 121.74, y: 119.24 }, { d: 24, x: 234.19, y: 136.69 }, { d: 24, x: 209.69, y: 150.19 },
-
-
-
                     { d: 24, x: 289.19, y: 115.69 }, { d: 24, x: 262.23, y: 108.19 }, { d: 24, x: 234.19, y: 108.19 },
-
-
-
                     { d: 24, x: 210.19, y: 122.19 }, { d: 24, x: 174.19, y: 132.69 }, { d: 24, x: 149.69, y: 119.19 },
-
-
-
                     { d: 24, x: 289.19, y: 143.19 }, { d: 24, x: 262.19, y: 136.69 }, { d: 30, x: 188.68, y: 183.68 },
-
-
-
                     { d: 24, x: 218.50, y: 179.00 }, { d: 24, x: 160.50, y: 169.00 }, { d: 24, x: 157.00, y: 94.00 },  
-
-
-
                     { d: 24, x: 211.00, y: 96.00 }   
-
-
-
                 ]
-
-
-
             },
             
-
              hitstick_v1_wasd: {
                 name: { es: "Hitstick v1 WASD", en: "Hitstick v1 WASD", it: "Hitstick v1 WASD", fr: "Hitstick v1 WASD", de: "Hitstick v1 WASD" },
                 joystick: { name: 'Hitstick v1 wasd', pW_mm: 95.4, pH_mm: 53.4, x_mm: 70, y_mm: 79, holes: jlfHoles_rotated, rotated: true },
@@ -5708,1430 +2318,453 @@ document.addEventListener('mouseup', (e) => {
                 ]
             },
 
-
-
             sega_p1: {
-
-
-
                 name: {es: "Sega P1", en: "Sega P1", it: "Sega P1", fr: "Sega P1", de: "Sega P1"},
-
-
-
                 joystick: { name: 'Sega P1 Stick', pW_mm: 95, pH_mm: 59, x_mm: 20, y_mm: 147.25 + 15, holes: jlfHoles_rotated, rotated: true },
-
-
-
                 buttons: [ 
-
-
-
                     { d: 30, x: 20 + (59/2) + 70, y: (147.25) + (95/2) + 0}, { d: 30, x: 20 + (59/2) + 70 + 36, y: (147.25) + (95/2) -7},  
-
-
-
                     { d: 30, x: 20 + (59/2) + 70 + 36 + 35.5, y: (147.25) + (95/2) -7}, { d: 30, x: 20 + (59/2) + 70 + 36 + 35.5 + 36, y: (147.25) + (95/2) +0},  
-
-
-
                     { d: 30, x: 20 + (59/2) + 70, y: (147.25) + (95/2) +33}, { d: 30, x: 20 + (59/2) + 70 + 36, y: (147.25) + (95/2) +33 -7}, 
-
-
-
                     { d: 30, x: 20 + (59/2) + 70 + 36 + 35.5, y: (147.25) + (95/2) +33-7}, { d: 30, x: 20 + (59/2) + 70 + 36 + 35.5 + 36, y: (147.25) + (95/2)+33}, 
-
-
-
                 ]
-
-
-
             },
 
-
-
              Noir: {
-
-
-
                 name: {es: "Noir", en: "Noir", it: "Noir", fr: "Noir", de: "Noir"},
-
-
-
                 joystick: { name: 'Sanwa Jlf', pW_mm: 95, pH_mm: 59, x_mm: 109.40, y_mm: 92.40, holes: jlfHoles_rotated, rotated: true },
-
-
-
                 buttons: [ 
-
-
-
                     { d: 30, x: 204.29, y: 153.29 }, { d: 30, x: 205.40, y: 119.90 }, { d: 30, x: 235.40, y: 104.40 },
                     { d: 30, x: 235.72, y: 139.72 }, { d: 30, x: 268.90, y: 106.90 }, { d: 30, x: 268.90, y: 140.90 },
                     { d: 30, x: 299.81, y: 119.81 }, { d: 30, x: 299.90, y: 153.90 }
-
-
-
                 ]
-
-
-
             },
 
-
-
             hybrid_custom: {
-
-
-
                 name: {es: "Hybrid Custom", en: "Hybrid Custom", it: "Hybrid Custom", fr: "Hybrid Custom", de: "Hybrid Custom"},
-
-
-
                 joystick: { name: 'Hybrid Stick', pW_mm: 95, pH_mm: 59, x_mm: 20, y_mm: 147.25 + 15, holes: jlfHoles_rotated, rotated: true },
-
-
-
                 buttons: [ 
-
-
-
                     { d: 30, x: 20 + (59/2) + 70, y: (147.25) + (95/2) +0}, { d: 30, x: 20 + (59/2) + 70 + 36, y: (147.25) + (95/2) -7},   
-
-
-
                     { d: 30, x: 20 + (59/2) + 70 + 36 + 35.25, y: (147.25) + (95/2) -7}, { d: 30, x: 20 + (59/2) + 70 + 36 + 35.25 + 36, y: (147.25) + (95/2) +0}, 
-
-
-
                     { d: 30, x: 20 + (59/2) + 70, y: (147.25) + (95/2) +33}, { d: 30, x: 20 + (59/2) + 70 + 36, y: (147.25) + (95/2) +33 -7},  
-
-
-
                     { d: 30, x: 20 + (59/2) + 70 + 36 + 35.25, y: (147.25) + (95/2) +33-7}, { d: 30, x: 20 + (59/2) + 70 + 36 + 35.25 + 36, y: (147.25) + (95/2)+33},
-
-
-
                 ]
-
-
-
             }
-
-
-
         };
-
-
-
-
-
-
 
         const presets = {}; // This will be populated by generateMirroredPresets
 
 
-
-
-
-
-
         function generateMirroredPresets() {
-
-
-
             for (const key in basePresets) {
-
-
-
                 presets[key] = basePresets[key]; // Add original preset
 
-
-
-
-
-
-
                 // Create mirrored preset
-
-
-
                 const originalPreset = basePresets[key];
-
-
-
                 const mirroredPreset = JSON.parse(JSON.stringify(originalPreset)); // Deep copy
 
-
-
-
-
-
-
                 // Update name for all languages
-
-
-
                 for (const langKey in mirroredPreset.name) {
-
-
-
                     mirroredPreset.name[langKey] = `${originalPreset.name[langKey]} Mirror`;
-
-
-
                 }
-
-
-
                 
-
-
-
                 // Determine overall width of the original preset to mirror around its center line
-
-
-
                 let allXCoordsForExtent = [];
-
-
-
                 if (originalPreset.buttons) {
-
-
-
                     originalPreset.buttons.forEach(b => {
-
-
-
                         allXCoordsForExtent.push(b.x - b.d / 2, b.x + b.d / 2);
-
-
-
                     });
-
-
-
                 }
-
-
-
                 if (originalPreset.joystick) {
-
-
-
                     const j = originalPreset.joystick;
-
-
-
                     const joystickWidth = j.rotated ? j.pH_mm : j.pW_mm;
-
-
-
                     allXCoordsForExtent.push(j.x_mm, j.x_mm + joystickWidth);
-
-
-
                 }
-
-
-
-
-
-
 
                 if (allXCoordsForExtent.length > 0) {
-
-
-
                     const presetMinX = Math.min(...allXCoordsForExtent);
-
-
-
                     const presetMaxX = Math.max(...allXCoordsForExtent);
-
-
-
                     const presetMidPointX = (presetMinX + presetMaxX) / 2;
 
-
-
-
-
-
-
                     if (mirroredPreset.buttons) {
-
-
-
                         mirroredPreset.buttons.forEach(b => {
-
-
-
                             b.x = presetMidPointX - (b.x - presetMidPointX);
-
-
-
                         });
-
-
-
                     }
-
-
-
                     if (mirroredPreset.joystick) {
-
-
-
                         const j = mirroredPreset.joystick;
-
-
-
                         const joystickWidth = j.rotated ? j.pH_mm : j.pW_mm;
-
-
-
                         const originalJoystickCenterX = j.x_mm + joystickWidth / 2;
-
-
-
                         const mirroredJoystickCenterX = presetMidPointX - (originalJoystickCenterX - presetMidPointX);
-
-
-
                         j.x_mm = mirroredJoystickCenterX - joystickWidth / 2;
-
-
-
                     }
-
-
-
                 }
-
-
-
                 presets[`${key}_mirror`] = mirroredPreset;
-
-
-
             }
-
-
-
         }
-
-
-
-
-
-
-
-
 
 
 
         function populatePresetDropdown() {
-
-
-
             const presetDropdown = document.getElementById('preset-layouts');
-
-
-
             const currentSelectedValue = presetDropdown.value; 
-
-
-
             presetDropdown.innerHTML = `<option value="" data-translate-key="selectLayout">${translations[currentLang].selectLayout}</option>`; 
-
-
-
             for (const key in presets) {
-
-
-
                 const option = document.createElement('option');
-
-
-
                 option.value = key;
-
-
-
                 // Use the name object which now contains translations
-
-
-
                 option.textContent = presets[key].name[currentLang] || presets[key].name['en'] || key; 
-
-
-
                 presetDropdown.appendChild(option);
-
-
-
             }
-
-
-
             if (currentSelectedValue) presetDropdown.value = currentSelectedValue; 
-
-
-
         }
-
-
-
-
-
-
-
-
-
 
 
         document.getElementById('load-preset').addEventListener('click', () => {
-
-
-
             const selectedPresetName = document.getElementById('preset-layouts').value;
-
-
-
             if (!selectedPresetName || !presets[selectedPresetName]) {
-
-
-
                 alert(translations[currentLang].alertSelectPreset);
-
-
-
                 return;
-
-
-
             }
-
-
-
             if (!confirm(translations[currentLang].confirmLoadPreset)) {
-
-
-
                 return;
-
-
-
             }
-
-
-
-
-
-
 
             layoutArea.innerHTML = ''; 
-
-
-
             hideButtonEditor();
-
-
-
             deselectImage();
-
-
-
             const preset = presets[selectedPresetName];
-
-
-
             const elementsToCreate = []; 
 
-
-
-
-
-
-
             if (preset.buttons) {
-
-
-
                 preset.buttons.forEach(btnData => {
-
-
-
                     elementsToCreate.push({ 
-
-
-
                         type: 'button', 
-
-
-
                         physicalXMm: btnData.x, 
-
-
-
                         physicalYMm: btnData.y, 
-
-
-
                         physicalDiameterMm: btnData.d,
-
-
-
                         color: btnData.color,
-
-
-
                         label: btnData.label // Include label if defined in preset
-
-
-
                     });
-
-
-
                 });
-
-
-
             }
-
-
-
             if (preset.joystick) {
-
-
-
                 const j = preset.joystick;
-
-
-
                 elementsToCreate.push({ 
-
-
-
                     type: 'joystick', 
-
-
-
                     name: j.name, 
-
-
-
                     physicalXMm: j.x_mm, 
-
-
-
                     physicalYMm: j.y_mm,
-
-
-
                     originalWidthMm: j.pW_mm, 
-
-
-
                     originalHeightMm: j.pH_mm, 
-
-
-
                     holes: j.holes, 
-
-
-
                     rotated: j.rotated 
-
-
-
                 });
-
-
-
             }
-
-
-
-
-
-
 
             if (elementsToCreate.length === 0) return;
 
-
-
-
-
-
-
             let minXmm = Infinity, minYmm = Infinity, maxXmm = -Infinity, maxYmm = -Infinity;
 
-
-
-
-
-
-
             elementsToCreate.forEach(elData => {
-
-
-
                 let elPhysicalWidthMM, elPhysicalHeightMM;
-
-
-
                 let elTopLeftXmm = elData.physicalXMm;
-
-
-
                 let elTopLeftYmm = elData.physicalYMm;
 
-
-
-
-
-
-
                 if (elData.type === 'button') {
-
-
-
                     elPhysicalWidthMM = elData.physicalDiameterMm;
-
-
-
                     elPhysicalHeightMM = elData.physicalDiameterMm;
-
-
-
                     elTopLeftXmm = elData.physicalXMm - elPhysicalWidthMM / 2; 
-
-
-
                     elTopLeftYmm = elData.physicalYMm - elPhysicalHeightMM / 2;
-
-
-
                 } else if (elData.type === 'joystick') {
-
-
-
                     elPhysicalWidthMM = elData.rotated ? elData.originalHeightMm : elData.originalWidthMm;
-
-
-
                     elPhysicalHeightMM = elData.rotated ? elData.originalWidthMm : elData.originalHeightMm;
-
-
-
                 }
-
-
-
                 minXmm = Math.min(minXmm, elTopLeftXmm);
-
-
-
                 minYmm = Math.min(minYmm, elTopLeftYmm);
-
-
-
                 maxXmm = Math.max(maxXmm, elTopLeftXmm + elPhysicalWidthMM);
-
-
-
                 maxYmm = Math.max(maxYmm, elTopLeftYmm + elPhysicalHeightMM);
-
-
-
             });
-
-
-
             
-
-
-
             const groupPhysicalWidthMM = maxXmm - minXmm;
-
-
-
             const groupPhysicalHeightMM = maxYmm - minYmm;
 
-
-
-
-
-
-
             const offsetXToCenterMM = (canvasPhysicalWidthMM - groupPhysicalWidthMM) / 2;
-
-
-
             const offsetYToCenterMM = (canvasPhysicalHeightMM - groupPhysicalHeightMM) / 2;
-
-
-
             
-
-
-
             const finalOffsetPhysicalXMM = offsetXToCenterMM - minXmm;
-
-
-
             const finalOffsetPhysicalYMM = offsetYToCenterMM - minYmm;
 
-
-
-
-
-
-
             elementsToCreate.forEach(elData => {
-
-
-
                 const finalPhysicalX = elData.physicalXMm + finalOffsetPhysicalXMM;
-
-
-
                 const finalPhysicalY = elData.physicalYMm + finalOffsetPhysicalYMM;
-
-
-
                 let newElement;
-
-
-
                 if (elData.type === 'button') {
-
-
-
                     newElement = createButton(elData.physicalDiameterMm, finalPhysicalX, finalPhysicalY, elData.color, elData.label);
-
-
-
                 } else if (elData.type === 'joystick') {
-
-
-
                     const joystickTopLeftX = (elData.physicalXMm) + finalOffsetPhysicalXMM;
-
-
-
                     const joystickTopLeftY = (elData.physicalYMm) + finalOffsetPhysicalYMM;
-
-
-
                     newElement = createJoystickPlate(elData.name, elData.originalWidthMm, elData.originalHeightMm, joystickTopLeftX, joystickTopLeftY, elData.holes, elData.rotated);
-
-
-
                 }
-
-
-
                 if (newElement) {
-
-
-
                     layoutArea.appendChild(newElement);
-
-
-
                 }
-
-
-
             });
-
-
-
         });
-
-
-
         
-
-
-
         // --- Save/Load Custom Layout ---
-
-
-
         saveLayoutBtn.addEventListener('click', () => {
-
-
-
             const layoutData = {
-
-
-
                 canvas: {
-
-
-
                     widthMM: canvasPhysicalWidthMM,
-
-
-
                     heightMM: canvasPhysicalHeightMM,
-
-
-
                     pxPerCm: current_PX_PER_MM * 10
-
-
-
                 },
-
-
-
                 elements: []
-
-
-
             };
 
-
-
-
-
-
-
             Array.from(layoutArea.children).forEach(el => {
-
-
-
                 const commonData = {
-
-
-
                     id: el.id,
-
-
-
                     physicalXMm: parseFloat(el.dataset.physicalXMm),
-
-
-
                     physicalYMm: parseFloat(el.dataset.physicalYMm),
-
-
-
                 };
-
-
-
                 if (el.classList.contains('draggable') && !el.classList.contains('draggable-image-wrapper') && !el.classList.contains('joystick-plate')) { // Button
-
-
-
                     layoutData.elements.push({
-
-
-
                         type: 'button',
-
-
-
                         ...commonData,
-
-
-
                         diameterMM: parseFloat(el.dataset.physicalDiameterMm),
-
-
-
                         color: el.style.backgroundColor,
-
-
-
                         label: el.dataset.label || ""
-
-
-
                     });
-
-
-
                 } else if (el.classList.contains('joystick-plate')) {
-
-
-
                     layoutData.elements.push({
-
-
-
                         type: 'joystick',
-
-
-
                         ...commonData,
-
-
-
                         name: el.dataset.name,
-
-
-
                         physicalWidthMm: parseFloat(el.dataset.physicalWidthMm), // This is display width
-
-
-
                         physicalHeightMm: parseFloat(el.dataset.physicalHeightMm), // This is display height
-
-
-
                         originalWidthMm: parseFloat(el.dataset.originalWidthMm),
-
-
-
                         originalHeightMm: parseFloat(el.dataset.originalHeightMm),
-
-
-
                         isRotated: el.dataset.isRotated === "true",
-
-
-
                         mountingHoles: JSON.parse(el.dataset.mountingHoles || "[]")
-
-
-
                     });
-
-
-
                 } else if (el.classList.contains('draggable-image-wrapper')) {
-
-
-
                      layoutData.elements.push({
-
-
-
                         type: 'image',
-
-
-
                         ...commonData,
-
-
-
                         src: el.dataset.src,
-
-
-
                         naturalWidth: parseFloat(el.dataset.naturalWidth),
-
-
-
                         naturalHeight: parseFloat(el.dataset.naturalHeight),
-
-
-
                         scale: parseFloat(el.dataset.scale),
-
-
-
                         rotate: parseFloat(el.dataset.rotate),
-
-
-
                         opacity: parseFloat(el.dataset.opacity),
-
-
-
                         visible: el.dataset.visible === "true",
-
-
-
                         locked: el.dataset.locked === "true"
-
-
-
                     });
-
-
-
                 }
-
-
-
             });
 
-
-
-
-
-
-
             const jsonData = JSON.stringify(layoutData, null, 2);
-
-
-
             const blob = new Blob([jsonData], { type: 'application/json' });
-
-
-
             const url = URL.createObjectURL(blob);
-
-
-
             const a = document.createElement('a');
-
-
-
             a.href = url;
-
-
-
             a.download = 'battlemonkey_layout.json';
-
-
-
             document.body.appendChild(a);
-
-
-
             a.click();
-
-
-
             document.body.removeChild(a);
-
-
-
             URL.revokeObjectURL(url);
-
-
-
         });
-
-
-
-
-
-
-
-       
-
-
-        
-
-
 
         loadLayoutInput.addEventListener('change', (event) => {
-
-
-
             const file = event.target.files[0];
-
-
-
             if (file && file.name.endsWith('.json')) {
-
-
-
                 const reader = new FileReader();
-
-
-
                 reader.onload = (e) => {
-
-
-
                     try {
-
-
-
                         const data = JSON.parse(e.target.result);
-
-
-
                         loadCustomLayout(data);
-
-
-
                     } catch (error) {
-
-
-
                         console.error("Error parsing layout file:", error);
-
-
-
                         alert("Error al cargar el archivo del layout. Asegúrate de que sea un archivo JSON válido generado por esta herramienta.");
-
-
-
                     }
-
-
-
                 }
-
-
-
                 reader.readAsText(file);
-
-
-
             } else if (file) {
-
-
-
                 alert("Por favor, selecciona un archivo .json válido.");
-
-
-
             }
-
-
-
             loadLayoutInput.value = ''; // Reset for same file selection
-
-
-
         });
-
-
-
-
-
 
 
         function loadCustomLayout(data) {
-
-
-
             if (!data || !data.canvas || !data.elements) {
-
-
-
                 alert("Archivo de layout inválido.");
-
-
-
                 return;
-
-
-
             }
 
-
-
-
-
-
-
             // Apply canvas settings from the file
-
-
-
             canvasWidthInput.value = data.canvas.widthMM;
-
-
-
             canvasHeightInput.value = data.canvas.heightMM;
-
-
-
             pixelDensityInput.value = data.canvas.pxPerCm;
-
-
-
             applyCanvasSettings(); // This will also update current_PX_PER_MM and redraw existing (which will be cleared)
 
-
-
-
-
-
-
             // Clear current layout
-
-
-
             layoutArea.innerHTML = '';
-
-
-
             hideButtonEditor();
-
-
-
             deselectImage();
-
-
-
             elementIdCounter = 0; // Reset ID counter
 
-
-
-
-
-
-
             // Recreate elements
-
-
-
             data.elements.forEach(elData => {
-
-
-
                 let newElement;
-
-
-
                 if (elData.type === 'button') {
-
-
-
                     newElement = createButton(elData.diameterMM, elData.physicalXMm, elData.physicalYMm, elData.color, elData.label);
-
-
-
                 } else if (elData.type === 'joystick') {
-
-
-
                     newElement = createJoystickPlate(elData.name, elData.originalWidthMm, elData.originalHeightMm, elData.physicalXMm, elData.physicalYMm, elData.mountingHoles, elData.isRotated);
-
-
-
                 } else if (elData.type === 'image') {
-
-
-
                     // For images, physicalXMm and physicalYMm are already top-left
-
-
-
                     const imgWrapper = baseCreateElement({ physicalXMm: elData.physicalXMm, physicalYMm: elData.physicalYMm });
-
-
-
                     imgWrapper.classList.add('draggable-image-wrapper');
-
-
-
                     
-
-
-
                     const img = document.createElement('img');
-
-
-
                     img.src = elData.src; // Use stored src
-
-
-
                     img.style.imageRendering = 'pixelated';
-
-
-
                     
-
-
-
                     imgWrapper.appendChild(img);
-
-
-
                     addDeleteButtonToElement(imgWrapper, el => el.remove());
-
-
-
                     imgWrapper.addEventListener('click', (e) => {
-
-
-
                         if (!e.target.classList.contains('resize-handle')) {
-
-
-
                             e.stopPropagation(); 
-
-
-
                             selectImage(imgWrapper);
-
-
-
                         }
-
-
-
                     });
-
-
-
                     ['tl', 'tr', 'bl', 'br'].forEach(handlePos => {
-
-
-
                         const handle = document.createElement('div');
-
-
-
                         handle.classList.add('resize-handle', handlePos);
-
-
-
                         handle.dataset.handle = handlePos;
-
-
-
                         handle.addEventListener('mousedown', onResizeStart);
-
-
-
                         imgWrapper.appendChild(handle);
-
-
-
                     });
-
-
-
-
-
-
 
                     // Set all dataset properties and then call updateImageTransform
-
-
-
                     imgWrapper.dataset.naturalWidth = elData.naturalWidth;
-
-
-
                     imgWrapper.dataset.naturalHeight = elData.naturalHeight;
-
-
-
                     imgWrapper.dataset.scale = elData.scale;
-
-
-
                     imgWrapper.dataset.rotate = elData.rotate;
-
-
-
                     imgWrapper.dataset.opacity = elData.opacity;
-
-
-
                     imgWrapper.dataset.visible = elData.visible;
-
-
-
                     imgWrapper.dataset.locked = elData.locked;
-
-
-
                     imgWrapper.dataset.src = elData.src;
-
-
-
                     
-
-
-
                     updateImageTransform(imgWrapper); // This sets width, height, transform based on scale and rotate
-
-
-
                     imgWrapper.style.display = elData.visible ? 'block' : 'none';
-
-
-
                     if (elData.locked) imgWrapper.classList.add('locked');
 
-
-
-
-
-
-
                     newElement = imgWrapper;
-
-
-
                 }
-
-
-
                 if (newElement) {
-
-
-
                     layoutArea.appendChild(newElement);
-
-
-
                 }
-
-
-
             });
-
-
-
         }
 
 
+        // --- INICIO MEJORA 1: LÓGICA DE TECLADO Y REJILLA ---
+        showGridCheckbox.addEventListener('change', () => {
+            layoutArea.classList.toggle('grid-active', showGridCheckbox.checked);
+        });
 
+        document.addEventListener('keydown', (e) => {
+            const activeElement = selectedButtonForEditor || selectedImageElement || selectedJoystick;
+            
+            // No hacer nada si no hay elemento seleccionado o si se está escribiendo en un input
+            if (!activeElement || ['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) {
+                return;
+            }
 
+            // Prevenir el scroll de la página con las flechas
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
 
+            const increment = e.shiftKey ? 10 : 1;
+            let currentLeft = parseFloat(activeElement.style.left);
+            let currentTop = parseFloat(activeElement.style.top);
 
+            switch (e.key) {
+                case 'ArrowUp':    currentTop -= increment; break;
+                case 'ArrowDown':  currentTop += increment; break;
+                case 'ArrowLeft':  currentLeft -= increment; break;
+                case 'ArrowRight': currentLeft += increment; break;
+                default: return; // Salir si no es una tecla de flecha
+            }
 
+            // Aplicar ajuste a la rejilla si está activo
+            if (snapToGridCheckbox.checked) {
+                currentLeft = Math.round(currentLeft / GRID_SIZE_PX) * GRID_SIZE_PX;
+                currentTop = Math.round(currentTop / GRID_SIZE_PX) * GRID_SIZE_PX;
+            }
 
+            // Comprobar límites del área de diseño
+            const layoutRect = layoutArea.getBoundingClientRect();
+            const itemWidth = activeElement.offsetWidth;
+            const itemHeight = activeElement.offsetHeight;
+            currentLeft = Math.max(0, Math.min(currentLeft, layoutRect.width - itemWidth));
+            currentTop = Math.max(0, Math.min(currentTop, layoutRect.height - itemHeight));
 
+            // Aplicar nueva posición
+            activeElement.style.left = `${currentLeft}px`;
+            activeElement.style.top = `${currentTop}px`;
+
+            // Actualizar la posición física en el dataset
+            updateElementPhysicalPosition(activeElement);
+
+            // Actualizar los inputs en el panel de propiedades si está visible
+            if (selectedButtonForEditor) {
+                document.getElementById('button-pos-x').value = parseFloat(activeElement.dataset.physicalXMm).toFixed(1);
+                document.getElementById('button-pos-y').value = parseFloat(activeElement.dataset.physicalYMm).toFixed(1);
+            } else if (selectedJoystick) {
+                document.getElementById('joystick-pos-x').value = parseFloat(activeElement.dataset.physicalXMm).toFixed(1);
+                document.getElementById('joystick-pos-y').value = parseFloat(activeElement.dataset.physicalYMm).toFixed(1);
+            }
+        });
+        // --- FIN MEJORA 1 ---
 
 
         // Initial UI setup
-
-
-
         applyCanvasSettings(); 
-
-
-
         generateMirroredPresets(); 
-
-
-
         populatePresetDropdown(); 
-
-
-
         translateUI(currentLang); 
-
-
-
-
-
-
 
     </script>
 
 
+<!-- Exportar lienzo como PNG -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const exportCanvasBtn = document.createElement('button');
+  exportCanvasBtn.textContent = "Exportar PNG";
+  exportCanvasBtn.className = "control-button w-full bg-blue-500 hover:bg-blue-700 rounded px-2 py-1 mt-2";
+  exportCanvasBtn.addEventListener('click', () => {
+    const layout = document.getElementById('layout-area');
+    html2canvas(layout, {
+      backgroundColor: null,
+      scale: 2,
+      useCORS: true
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'layout.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  });
+
+  // Insertar el botón debajo del botón "Imprimir Layout"
+  document.getElementById('print-layout').insertAdjacentElement('afterend', exportCanvasBtn);
+</script>
 
 </body>
 
-
-
 </html>
-
-
-
