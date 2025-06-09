@@ -1,4 +1,4 @@
-# Open-Arcade-layout-tester-and-creator
+~# Open-Arcade-layout-tester-and-creator
 New project to create a solid and usable arcade layout creator  
 The final idea for this project is to create a versatile arcade layout tester and creator, any new idea and modification to get more options and more posibilities are welcome.
 
@@ -16,7 +16,7 @@ You can try it from the following link [Open-Arcade-layout-tester-and-creator](h
 
 -Create a drag selection tool, capable to select variuos items at the same time and move or center on the canvas
 
--Export png fuction--------------done
+-~Export png fuction~--------------done
 
 -Posibility of moving elements wi  th 0.5mm steps with keyboard arrows-------------done
 
