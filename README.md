@@ -6,9 +6,9 @@ You can try it from the following link [Open-Arcade-layout-tester-and-creator](h
 
 ## WORKFLOW
 
--Create a double diameter for the buttons, inner diameter fot the hole and outer diameter for the real button diameter.
+-~Create a double diameter for the buttons, inner diameter fot the hole and outer diameter for the real button diameter~--------- done
 
--Modify the anti collision sistem to put a 3mm gap between the real diameter of the buttons 
+-~Modify the anti collision sistem to put a 3mm gap between the real diameter of the buttons~---------done 
 
 -~~Modify the anti collision system to it does not interfere with the background image~~ ----------------done
 
@@ -18,9 +18,9 @@ You can try it from the following link [Open-Arcade-layout-tester-and-creator](h
 
 -~Export png fuction~--------------done
 
--Posibility of moving elements wi  th 0.5mm steps with keyboard arrows-------------done
+-~Posibility of moving elements with 0.5mm steps with keyboard arrows~-------------done
 
--Adding a grid to have some references--------------done
+-~Adding a grid to have some references~--------------done
 
 -Layouts to come
 
