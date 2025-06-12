@@ -860,11 +860,10 @@
       <input type="color" id="button-color-input-editor" class="w-full h-10 mt-1">
     </div>
 	
-	 <div class="mt-3 flex items-center">
-      <input type="checkbox" id="buton-lock">
-      <label for="buton-lock" class="ml-2" data-translate-key="buttonLockLabel">Bloquear Botón</label>
-    </div>
-
+	<div class="mt-3 flex items-center">
+  <input type="checkbox" id="element-lock">
+  <label for="element-lock" class="ml-2" data-translate-key="buttonLockLabel">Bloquear Posición</label>
+</div>
 
     <div class="mt-2">
       <label for="button-pos-x" data-translate-key="pos_x">Posición X (mm):</label>
@@ -879,7 +878,10 @@
 
   <div id="joystick-editor-container" class="hidden">
     <h3 class="text-lg font-semibold mb-2" data-translate-key="joystick_properties">Propiedades de la Palanca</h3>
-
+<div class="mt-3 flex items-center">
+  <input type="checkbox" id="element-lock">
+  <label for="element-lock" class="ml-2" data-translate-key="buttonLockLabel">Bloquear Posición</label>
+</div>
     <div class="mt-2">
       <label for="joystick-pos-x" data-translate-key="pos_x">Posición X (mm):</label>
       <input type="number" id="joystick-pos-x" class="control-input bg-gray-700 text-white border border-gray-200 rounded px-2 py-1" step="1">
@@ -1088,7 +1090,8 @@
                 alertSelectPreset: "Por favor, selecciona un layout predefinido válido.",
                 buttonPropertiesTitle: "Propiedades del Botón", 
                 buttonLabelLabel: "Etiqueta del Botón:", 
-                buttonColorLabel: "Color del Botón:", 
+                buttonLockLabel: "Bloquear Posición",
+				buttonColorLabel: "Color del Botón:", 
 			    joystick_properties: "Propiedades de la Palanca",
                 pos_x: "Posición X (mm)",
                 pos_y: "Posición Y (mm)",
@@ -1137,7 +1140,8 @@
                 alertSelectPreset: "Please select a valid preset layout.",
                 buttonPropertiesTitle: "Button Properties", 
                 buttonLabelLabel: "Button Label:", 
-                buttonColorLabel: "Button Color:",
+                buttonLockLabel: "Lock Position",
+				buttonColorLabel: "Button Color:",
                 joystick_properties: "Joystick Properties",
                 pos_x: "Position X (mm)",
                 pos_y: "Position Y (mm)",
@@ -1186,7 +1190,8 @@
                 alertSelectPreset: "Per favore seleziona un layout predefinito valido.",
                 buttonPropertiesTitle: "Proprietà Pulsante", 
                 buttonLabelLabel: "Etichetta Pulsante:", 
-                buttonColorLabel: "Colore Pulsante:",
+                buttonLockLabel: "Posizione di blocco",
+				buttonColorLabel: "Colore Pulsante:",
                 joystick_properties: "Proprietà del joystick",
                 pos_x: "Posizione X (mm)",
                 pos_y: "Position Y (mm)",
@@ -1235,7 +1240,8 @@
                 alertSelectPreset: "Veuillez sélectionner un layout prédéfini valide.",
                 buttonPropertiesTitle: "Propriétés du Bouton", 
                 buttonLabelLabel: "Étiquette du Bouton:", 
-                buttonColorLabel: "Couleur du Bouton:",
+                buttonLockLabel: "Position de verrouillage",
+				buttonColorLabel: "Couleur du Bouton:",
                 joystick_properties: "Propriétés du joystick",
                 pos_x: "Position X (mm)",
                 pos_y: "Position Y (mm)",
@@ -1284,7 +1290,8 @@
                 alertSelectPreset: "Bitte wählen Sie ein gültiges voreingestelltes Layout aus.",
                 buttonPropertiesTitle: "Button-Eigenschaften", 
                 buttonLabelLabel: "Button-Beschriftung:", 
-                buttonColorLabel: "Button-Farbe:",
+                buttonLockLabel: "Sperrposition",
+				buttonColorLabel: "Button-Farbe:",
                 joystick_properties: "Joystick-Eigenschaften",
                 pos_x: "Position X (mm)",
                 pos_y: "Position Y (mm)",
@@ -1448,7 +1455,10 @@
     button.style.height = `${diameterPX}px`;
     button.style.left = `${(physicalXMm * current_PX_PER_MM) - diameterPX / 2}px`;
     button.style.top = `${(physicalYMm * current_PX_PER_MM) - diameterPX / 2}px`;
-    button.textContent = label || `${diameterMM}`; 
+    const labelSpan = document.createElement('span');
+labelSpan.textContent = label || `${diameterMM}`;
+labelSpan.style.pointerEvents = 'none'; // <- evita que el texto bloquee clics
+button.appendChild(labelSpan); 
 
     // Define color final
     const buttonColor = color || (diameterMM === 24 ? '#4299E1' : '#ED8936');
@@ -1888,7 +1898,18 @@ ring.style.border = `2px solid ${buttonColor}`;
             hideJoystickEditor();
 
             selectedButtonForEditor = button;
-            
+            const lockCheckbox = document.getElementById('element-lock');
+lockCheckbox.checked = selectedButtonForEditor.dataset.locked === "true";
+lockCheckbox.onchange = () => {
+    const isLocked = lockCheckbox.checked;
+    selectedButtonForEditor.dataset.locked = isLocked;
+    if (isLocked) {
+        selectedButtonForEditor.classList.add('locked');
+    } else {
+        selectedButtonForEditor.classList.remove('locked');
+    }
+};
+
             document.getElementById('floating-editor-panel').classList.remove('hidden');
             document.getElementById('button-editor-container').classList.remove('hidden');
             document.getElementById('joystick-editor-container').classList.add('hidden');
@@ -1945,7 +1966,10 @@ ring.style.border = `2px solid ${buttonColor}`;
             if (selectedButtonForEditor) {
                 const newLabel = e.target.value.trim();
                 selectedButtonForEditor.dataset.label = newLabel;
-                selectedButtonForEditor.textContent = newLabel || selectedButtonForEditor.dataset.physicalDiameterMm;
+                const labelSpan = selectedButtonForEditor.querySelector('span');
+if (labelSpan) {
+    labelSpan.textContent = newLabel || selectedButtonForEditor.dataset.physicalDiameterMm;
+}
             }
         });
 
@@ -1957,6 +1981,17 @@ ring.style.border = `2px solid ${buttonColor}`;
             hideButtonEditor();
 
             selectedJoystick = plate;
+const lockCheckbox = document.getElementById('element-lock');
+lockCheckbox.checked = selectedJoystick.dataset.locked === "true";
+lockCheckbox.onchange = () => {
+    const isLocked = lockCheckbox.checked;
+    selectedJoystick.dataset.locked = isLocked;
+    if (isLocked) {
+        selectedJoystick.classList.add('locked');
+    } else {
+        selectedJoystick.classList.remove('locked');
+    }
+};
 
             document.getElementById('floating-editor-panel').classList.remove('hidden');
             document.getElementById('joystick-editor-container').classList.remove('hidden');
@@ -1981,21 +2016,18 @@ ring.style.border = `2px solid ${buttonColor}`;
         // --- End Editors Logic ---
 
 
-        document.addEventListener('click', function(event) {
-            const floatingPanel = document.getElementById('floating-editor-panel');
-            const isClickInsideLayout = layoutArea.contains(event.target);
-            const isClickInsidePanel = floatingPanel.contains(event.target);
-            const isClickOnElement = event.target.closest('.draggable, .joystick-plate, .draggable-image-wrapper');
+    document.addEventListener('click', function(event) {
+    const floatingPanel = document.getElementById('floating-editor-panel');
+    const isClickInsidePanel = floatingPanel.contains(event.target);
+    const isClickOnElement = event.target.closest('.draggable, .joystick-plate, .draggable-image-wrapper');
 
-            if (!isClickInsidePanel && !isClickOnElement) {
-                deselectImage();
-                hideButtonEditor();
-                hideJoystickEditor();
-                if (event.target !== layoutArea) { // Don't hide panel if clicking on empty space in layout area
-                     floatingPanel.classList.add('hidden');
-                }
-            }
-        });
+    if (!isClickInsidePanel && !isClickOnElement) {
+        deselectImage();
+        hideButtonEditor();
+        hideJoystickEditor();
+        floatingPanel.classList.add('hidden'); // <- oculta el panel si haces clic fuera de elementos
+    }
+});
 
 
 
@@ -2017,13 +2049,42 @@ ring.style.border = `2px solid ${buttonColor}`;
 
 
         function getCenter(el) {
-            const rect = el.getBoundingClientRect();
-            return {
-                x: rect.left + rect.width / 2,
-                y: rect.top + rect.height / 2,
-                r: rect.width / 2
-            };
-        }
+  if (el.classList.contains('joystick-plate')) {
+    const plateRect = el.getBoundingClientRect();
+    const ball = el.querySelector('.joystick-ball-top');
+    let fullRect = plateRect;
+
+    if (ball) {
+      const ballRect = ball.getBoundingClientRect();
+      const minLeft = Math.min(plateRect.left, ballRect.left);
+      const minTop = Math.min(plateRect.top, ballRect.top);
+      const maxRight = Math.max(plateRect.right, ballRect.right);
+      const maxBottom = Math.max(plateRect.bottom, ballRect.bottom);
+      const width = maxRight - minLeft;
+      const height = maxBottom - minTop;
+      fullRect = {
+        left: minLeft,
+        top: minTop,
+        width: width,
+        height: height
+      };
+    }
+
+    return {
+      x: fullRect.left + fullRect.width / 2,
+      y: fullRect.top + fullRect.height / 2,
+      r: Math.max(fullRect.width, fullRect.height) / 2
+    };
+  } else {
+    const rect = el.getBoundingClientRect();
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      r: rect.width / 2
+    };
+  }
+}
+
 
         function isCircleOverlap(el1, el2) {
             const a = getCenter(el1);
@@ -2058,24 +2119,27 @@ ring.style.border = `2px solid ${buttonColor}`;
             el1.style.top = `${currentTop + moveY}px`;
         }
 
-        function resolveCollisions(element) {
-        const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
-            return el !== element && !el.classList.contains('draggable-image-wrapper');
-        });
+    function resolveCollisions(element) {
+  if (element.classList.contains('draggable-image-wrapper')) return; // 🛑 No hacer nada si es una imagen
 
-        others.forEach(other => {
-            if (isCircleOverlap(element, other)) {
-            pushAwayFrom(element, other);
-            }
-        });
-        }
+  const others = [...document.querySelectorAll('.draggable, .joystick-plate')].filter(el => {
+    return el !== element && !el.classList.contains('draggable-image-wrapper');
+  });
+
+  others.forEach(other => {
+    if (isCircleOverlap(element, other)) {
+      pushAwayFrom(element, other);
+    }
+  });
+}
+
 
 
         function makeDraggable(element) {
             element.addEventListener('mousedown', (e) => {
-                if ((element.classList.contains('draggable-image-wrapper') && element.dataset.locked === "true") || e.target.classList.contains('resize-handle')) {
-                    return;
-                }
+                if (element.dataset.locked === "true" || e.target.classList.contains('resize-handle')) {
+    return;
+}
 
                 if (e.button !== 0 || e.target.classList.contains('delete-btn') || e.target.closest('.delete-btn')) return;
                 
@@ -2104,7 +2168,7 @@ ring.style.border = `2px solid ${buttonColor}`;
             const itemWidth = element.offsetWidth;
             const itemHeight = element.offsetHeight;
 
-            if (element.classList.contains('draggable-image-wrapper') || element.classList.contains('joystick-plate')) {
+if (element.classList.contains('draggable-image-wrapper') || element.classList.contains('joystick-plate')) {
                 element.dataset.physicalXMm = newX / current_PX_PER_MM;
                 element.dataset.physicalYMm = newY / current_PX_PER_MM;
             } else if (element.classList.contains('draggable')) { // Botones
