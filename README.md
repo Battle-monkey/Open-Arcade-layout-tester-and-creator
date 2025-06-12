@@ -12,7 +12,7 @@ You can try it from the following link [Open-Arcade-layout-tester-and-creator](h
 
 -~~Modify the anti collision system to it does not interfere with the background image~~ ----------------done
 
--Modify the anti collision sistem to work right with the lever plates
+-~~Modify the anti collision sistem to work right with the lever plates~~ ----------------done
 
 -Create a drag selection tool, capable to select variuos items at the same time and move or center on the canvas
 
